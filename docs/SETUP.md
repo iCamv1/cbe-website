@@ -89,10 +89,11 @@ The quote form on `/contact` is now a real Netlify form (`name="quote-request"`,
 
 Free tier: 100 submissions/month, which is plenty for a quote form.
 
-## 6. Custom domain (when CBE is ready to switch from the old site)
+## 6. Custom domains (when CBE is ready to switch from the old site)
 
-Canonical URLs, sitemap and robots already point at `https://www.chrisbarronengineering.com.au`.
-Netlify -> **Domain management -> Add a domain**, then update DNS at the registrar (CNAME `www` -> the Netlify site, A/ALIAS apex -> Netlify's load balancer as shown in the dashboard). HTTPS is automatic. Keep `www` as the primary.
+Two domains are involved. **Primary: www.custombullbars.com.au** (the old Joomla site on SiteGround, which Google has indexed for years; canonicals, sitemap and robots point here). **Alias: chrisbarronengineering.com.au** (today an 81-byte meta-refresh forwarder on a cPanel host at hostyourservices.net; its MX record points at that same host, so CBE's admin@ email lives there and that hosting must not be cancelled).
+
+Netlify -> Domain management -> Add a domain: add `custombullbars.com.au` (set `www.custombullbars.com.au` as primary) and `chrisbarronengineering.com.au`; Netlify redirects every alias to the primary automatically. Then, at each domain's DNS host (SiteGround for custombullbars, cPanel/hostyourservices for chrisbarronengineering): `www` CNAME -> `chris-barron-engineering.netlify.app`, apex A -> `75.2.60.5`. Change nothing else (MX, mail, SPF/DKIM). HTTPS is automatic. The full brief for the IT contact is the "CBE Domain Handover" page.
 
 ## Day-to-day for you
 

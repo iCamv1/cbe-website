@@ -52,7 +52,7 @@ Six standalone pages, each with its own `<head>`, inlined page-specific `<style>
 - Nav links use extensionless paths (`/bull-bars`, `/about`); `netlify.toml` rewrites them and Netlify pretty URLs do too. JS-driven navigations use explicit `.html` + query string.
 - Styling goes through `style.css` CSS custom properties (`--accent`, `--accent2`, `--bg`, `--surface`, `--text-muted`, ...). Reuse them; page-specific CSS is inlined in that page's `<head>`. Fonts load via `<link>` in each head (no `@import`).
 - Data strings rendered into HTML in the inline scripts go through the local `escHtml` / `escAttr` helpers.
-- Canonical URLs and `og:image` point at `https://www.chrisbarronengineering.com.au` (the eventual production domain); the Netlify site is `chris-barron-engineering.netlify.app`.
+- Canonical URLs, sitemap and `og:image` point at `https://www.custombullbars.com.au` (the production domain Google has indexed for years; `chrisbarronengineering.com.au` is a redirect alias to it). The Netlify site is `chris-barron-engineering.netlify.app`.
 - Product photos were batch-optimised (max 1600px, JPEG q80). Originals are in `_images-original/` (git-ignored) and a sibling backup folder.
 
 ## Security notes
