@@ -43,7 +43,26 @@ If you use a different owner/name, change `backend.repo` in `admin/config.yml`.
 
 From now on `deploy.bat` is only a fallback. The old hard-coded Netlify token was already revoked (the API returned "Unauthorized") and has been removed from the file.
 
-## 3. GitHub login for the admin (Netlify OAuth provider)
+## 3a. The simple admin at /admin (what CBE staff use)
+
+`admin/index.html` is a purpose-built, passcode-protected catalogue manager. It talks to the
+Netlify Function in `netlify/functions/catalogue.js`, which commits to GitHub with a token that
+only lives in Netlify's environment variables. Set these under **Site configuration -> Environment
+variables** (scope: all, or Functions):
+
+| Variable | Value |
+|---|---|
+| `GITHUB_TOKEN` | Fine-grained personal access token (GitHub -> Settings -> Developer settings -> Personal access tokens -> Fine-grained). Owner iCamv1, repository access **Only select repositories: cbe-website**, permission **Contents: Read and write**. Set the longest expiry you're comfortable with and diarise renewing it. |
+| `GITHUB_REPO` | `iCamv1/cbe-website` |
+| `GITHUB_BRANCH` | `main` |
+| `ADMIN_PASSCODE` | The passcode CBE staff type in. Long and memorable (a short sentence works). Changing it signs everyone out within 30 days. |
+| `SESSION_SECRET` | Optional random string; rotate it to sign everyone out immediately. |
+
+After changing variables, trigger a deploy. `/api/config` reports `configured: true` when both the token and passcode are present; until then the admin shows a yellow "saving is not switched on" banner.
+
+How it saves: one Git commit per save (photo + JSON together), photo resized to max 1600 px WebP in the browser, uploads land in `images/bull-bars/uploads/`. Deleting an entry also deletes its uploaded photo (never the original scraped photos). The admin reads `/admin/catalogue.json` (generated at build) and overlays unpublished saves from localStorage until the next deploy includes them.
+
+## 3b. Advanced editor (/admin/advanced, Sveltia CMS, GitHub login)
 
 1. GitHub -> **Settings -> Developer settings -> OAuth Apps -> New OAuth App**
    (https://github.com/settings/developers). Created under the `iCamv1` account.
@@ -53,15 +72,13 @@ From now on `deploy.bat` is only a fallback. The old hard-coded Netlify token wa
 2. Copy the **Client ID**, then **Generate a new client secret** and copy it (shown once).
 3. Netlify -> site -> **Site configuration -> Security -> OAuth -> Authentication providers -> Install provider -> GitHub**. Paste the Client ID and secret. Save.
    (Do **not** use the "Identity" section - that is the deprecated path.)
-4. Open https://chris-barron-engineering.netlify.app/admin/ -> **Sign in with GitHub**. You should land in the admin with "Bull Bars & Products", "Truck Models" and "Makes".
+4. Open https://chris-barron-engineering.netlify.app/admin/advanced/ -> **Sign in with GitHub**. You should land in Sveltia with "Bull Bars & Products", "Truck Models" and "Makes". (Done and verified 19 Oct 2026.)
 
 ## 4. Give the CBE admin access
 
-1. Have her create a free GitHub account (e.g. with `admin@chrisbarronengineering.com.au`). Two-factor via the GitHub mobile app or SMS is fine.
-2. GitHub (signed in as iCamv1) -> `iCamv1/cbe-website` -> **Settings -> Collaborators -> Add people** -> her username -> role **Write**. She accepts the email invitation.
-3. Send her `docs/ADMIN-GUIDE.md` (also published as a web page - see the hand-over message) and the admin link.
-
-That's the only account she needs. Her saves show up as commits authored by her, so there is a full history and any change can be reverted from GitHub.
+She only needs the admin link and the passcode (see 3a). No GitHub account. Send her
+`docs/ADMIN-GUIDE.md` (also published as a web page). If you ever want her in the advanced
+editor instead, invite her GitHub account as a Write collaborator on iCamv1/cbe-website.
 
 ## 5. Contact form (Netlify Forms)
 

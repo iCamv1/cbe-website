@@ -2,18 +2,727 @@
 <html lang="en-AU">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <title>CBE Website Admin — Chris Barron Engineering</title>
-  <link rel="icon" href="/favicon.png">
+  <meta name="theme-color" content="#0D0F14">
+  <title>CBE Catalogue</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800&display=swap">
+  <style>
+    /* ── Brand tokens (same palette as the public site) ───────────── */
+    :root {
+      --bg: #0D0F14; --bg2: #111418; --surface: #161A23; --surface2: #1E2433; --surface3: #252D40;
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --accent: #027EA6; --accent2: #00B4D8; --accent-soft: rgba(0,180,216,0.12);
+      --text: #E8EAED; --muted: #9AA1AB; --dim: #6B7280; --white: #fff;
+      --green: #2ECC71; --green-soft: rgba(46,204,113,0.14); --amber: #E8B04A; --amber-soft: rgba(232,176,74,0.14);
+      --red: #E74C3C; --red-soft: rgba(231,76,60,0.14);
+      --radius: 12px; --radius-lg: 18px;
+      --shadow: 0 10px 40px rgba(0,0,0,0.45);
+      --font: 'Fira Sans', 'Segoe UI', system-ui, sans-serif;
+      --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px); --sar: env(safe-area-inset-right, 0px);
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
+    a { color: var(--accent2); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ── Buttons & fields ─────────────────────────────────────────── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 10px; border: 1px solid transparent; font-weight: 600; font-size: .95rem; line-height: 1.2; transition: background .15s, border-color .15s, transform .1s, opacity .15s; white-space: nowrap; }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent2); }
+    .btn-ghost { background: transparent; border-color: var(--border2); color: var(--text); }
+    .btn-ghost:hover:not(:disabled) { background: var(--surface2); border-color: var(--accent2); }
+    .btn-danger { background: transparent; border-color: rgba(231,76,60,.4); color: #ff8a7a; }
+    .btn-danger:hover:not(:disabled) { background: var(--red-soft); }
+    .btn-danger.solid { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-lg { padding: 14px 22px; font-size: 1.02rem; }
+    .btn-sm { padding: 8px 12px; font-size: .85rem; }
+    .btn:focus-visible, .field:focus-visible, .chip:focus-visible, .card:focus-visible, .icon-btn:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+
+    .field { width: 100%; background: var(--surface2); border: 1.5px solid var(--border2); border-radius: 10px; padding: 12px 14px; color: var(--text); transition: border-color .15s, box-shadow .15s; }
+    .field:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .field::placeholder { color: var(--dim); }
+    select.field { appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239AA1AB' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; cursor: pointer; }
+    select.field:disabled { opacity: .45; cursor: not-allowed; }
+    textarea.field { min-height: 120px; resize: vertical; line-height: 1.55; }
+    label.lbl { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 7px; }
+    .hint { font-size: .82rem; color: var(--dim); margin-top: 6px; }
+    .err { color: #ff8a7a; font-size: .88rem; margin-top: 6px; }
+    .req { color: var(--accent2); }
+
+    /* ── Login ────────────────────────────────────────────────────── */
+    #login { min-height: 100%; display: grid; place-items: center; padding: calc(24px + var(--sat)) max(16px, var(--sar)) calc(24px + var(--sab)) max(16px, var(--sal)); background: radial-gradient(900px 500px at 50% -10%, rgba(2,126,166,.25), transparent 60%), var(--bg); }
+    .login-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 32px 30px; box-shadow: var(--shadow); }
+    .login-card img { width: 72px; height: 72px; border-radius: 50%; display: block; margin: 0 auto 14px; }
+    .login-card h1 { font-size: 1.35rem; font-weight: 800; text-align: center; margin: 0 0 4px; }
+    .login-card .sub { text-align: center; color: var(--muted); font-size: .92rem; margin: 0 0 26px; }
+    .pass-wrap { position: relative; }
+    .pass-wrap .field { padding-right: 86px; letter-spacing: .08em; font-size: 1.05rem; }
+    .pass-wrap .show { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: var(--muted); font-size: .8rem; font-weight: 600; padding: 6px 8px; border-radius: 6px; }
+    .pass-wrap .show:hover { color: var(--text); background: var(--surface3); }
+    .login-card .btn { width: 100%; margin-top: 16px; }
+    .login-foot { text-align: center; color: var(--dim); font-size: .8rem; margin-top: 22px; }
+
+    /* ── App shell ────────────────────────────────────────────────── */
+    #app { min-height: 100%; display: flex; flex-direction: column; }
+    .topbar { position: sticky; top: 0; z-index: 20; background: rgba(13,15,20,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding-top: var(--sat); }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 14px; padding: 12px max(20px, var(--sar)) 12px max(20px, var(--sal)); }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand img { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+    .brand .name { font-weight: 800; font-size: 1rem; line-height: 1.15; white-space: nowrap; }
+    .brand .tag { font-size: .72rem; color: var(--accent2); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+    .status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font-size: .8rem; font-weight: 600; background: var(--green-soft); color: var(--green); white-space: nowrap; }
+    .status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .status.busy { background: var(--amber-soft); color: var(--amber); }
+    .status.busy .dot { animation: pulse 1.2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+    .spacer { flex: 1; }
+    .icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border2); background: transparent; color: var(--muted); display: inline-flex; align-items: center; justify-content: center; }
+    .icon-btn:hover { color: var(--text); background: var(--surface2); }
+    .icon-btn svg { width: 20px; height: 20px; }
+    .menu { position: absolute; right: max(20px, var(--sar)); top: calc(100% - 4px); background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; box-shadow: var(--shadow); min-width: 220px; padding: 6px; z-index: 30; }
+    .menu a, .menu button { display: flex; width: 100%; text-align: left; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 8px; background: none; border: 0; color: var(--text); text-decoration: none; font-size: .92rem; }
+    .menu a:hover, .menu button:hover { background: var(--surface2); }
+    .menu .sep { height: 1px; background: var(--border); margin: 6px 4px; }
+
+    .banner { background: var(--amber-soft); color: var(--amber); border-bottom: 1px solid rgba(232,176,74,.3); padding: 10px max(20px, var(--sar)) 10px max(20px, var(--sal)); font-size: .9rem; text-align: center; }
+
+    .toolbar { max-width: 1280px; margin: 0 auto; width: 100%; padding: 18px max(20px, var(--sar)) 0 max(20px, var(--sal)); display: grid; grid-template-columns: 200px 220px 1fr auto; gap: 10px; align-items: center; }
+    .search { position: relative; }
+    .search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--dim); pointer-events: none; }
+    .search .field { padding-left: 40px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--border2); background: transparent; color: var(--muted); font-size: .85rem; font-weight: 600; white-space: nowrap; }
+    .chip[aria-pressed="true"] { background: var(--amber-soft); border-color: rgba(232,176,74,.5); color: var(--amber); }
+    .summary { max-width: 1280px; margin: 0 auto; width: 100%; padding: 14px max(20px, var(--sar)) 0 max(20px, var(--sal)); display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .summary h2 { font-size: 1.15rem; font-weight: 800; margin: 0; }
+    .summary .count { color: var(--muted); font-size: .9rem; }
+
+    /* ── Grid ─────────────────────────────────────────────────────── */
+    .grid { max-width: 1280px; margin: 0 auto; width: 100%; padding: 16px max(20px, var(--sar)) calc(110px + var(--sab)) max(20px, var(--sal)); display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+    .card { position: relative; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; padding: 0; display: flex; flex-direction: column; transition: border-color .15s, transform .15s, box-shadow .15s; }
+    .card:hover { border-color: var(--accent2); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card .ph { aspect-ratio: 4/3; background: var(--surface2); display: grid; place-items: center; color: var(--dim); overflow: hidden; }
+    .card .ph img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
+    .card .ph svg { width: 36px; height: 36px; opacity: .35; }
+    .card .ph .nophoto { font-size: .78rem; font-weight: 600; color: var(--amber); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .card .body { padding: 12px 14px 14px; display: grid; gap: 4px; }
+    .card .title { font-weight: 600; font-size: .92rem; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card .model { font-size: .8rem; color: var(--muted); }
+    .badge { position: absolute; top: 10px; left: 10px; padding: 4px 9px; border-radius: 999px; font-size: .72rem; font-weight: 700; background: var(--amber); color: #1a1200; }
+    .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 70px 20px; }
+    .empty svg { width: 48px; height: 48px; opacity: .25; display: block; margin: 0 auto 12px; }
+
+    .fab { position: fixed; right: max(20px, var(--sar)); bottom: calc(20px + var(--sab)); z-index: 15; box-shadow: 0 10px 30px rgba(0,180,216,.35); border-radius: 999px; padding: 15px 22px; font-size: 1rem; }
+
+    /* ── Drawer (add / edit) ──────────────────────────────────────── */
+    .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 40; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .scrim.open { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); background: var(--bg2); border-left: 1px solid var(--border); z-index: 50; transform: translateX(100%); transition: transform .25s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: var(--shadow); }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head { display: flex; align-items: center; gap: 12px; padding: calc(14px + var(--sat)) max(18px, var(--sar)) 14px 20px; border-bottom: 1px solid var(--border); }
+    .drawer-head h2 { font-size: 1.15rem; font-weight: 800; margin: 0; flex: 1; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 18px 20px 24px; display: grid; gap: 20px; align-content: start; }
+    .drawer-foot { padding: 14px 20px calc(14px + var(--sab)); border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; background: var(--bg2); }
+    .drawer-foot .spacer { flex: 1; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .photo { border: 2px dashed var(--border2); border-radius: var(--radius); background: var(--surface); overflow: hidden; transition: border-color .15s, background .15s; }
+    .photo.drag { border-color: var(--accent2); background: var(--accent-soft); }
+    .photo .preview { aspect-ratio: 4/3; display: grid; place-items: center; background: var(--surface2); position: relative; }
+    .photo .preview img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .photo .preview .empty-ph { text-align: center; color: var(--muted); padding: 20px; font-size: .9rem; }
+    .photo .preview .empty-ph svg { width: 40px; height: 40px; opacity: .4; display: block; margin: 0 auto 8px; }
+    .photo .actions { display: flex; gap: 8px; padding: 10px; flex-wrap: wrap; border-top: 1px solid var(--border); }
+    .photo .working { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(13,15,20,.7); font-weight: 600; color: var(--accent2); }
+    .inline-new { background: var(--surface); border: 1px solid var(--border2); border-radius: 10px; padding: 12px; display: grid; gap: 10px; }
+    .inline-new .row { display: flex; gap: 8px; }
+    details.adv summary { cursor: pointer; color: var(--muted); font-size: .88rem; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 6px; }
+    details.adv summary::-webkit-details-marker { display: none; }
+    details.adv summary::before { content: '▸'; transition: transform .15s; }
+    details.adv[open] summary::before { transform: rotate(90deg); }
+    details.adv .inner { margin-top: 12px; }
+    .confirm { background: var(--red-soft); border: 1px solid rgba(231,76,60,.35); border-radius: 10px; padding: 12px 14px; display: grid; gap: 10px; }
+    .confirm p { margin: 0; font-size: .92rem; }
+    .confirm .row { display: flex; gap: 8px; }
+
+    /* ── Toasts ───────────────────────────────────────────────────── */
+    .toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + var(--sab)); z-index: 60; display: grid; gap: 8px; width: min(520px, calc(100% - 32px)); pointer-events: none; }
+    .toast { background: var(--surface); border: 1px solid var(--border2); border-left: 4px solid var(--green); border-radius: 10px; padding: 12px 16px; box-shadow: var(--shadow); font-size: .92rem; animation: rise .2s ease-out; pointer-events: auto; }
+    .toast.err { border-left-color: var(--red); }
+    .toast.info { border-left-color: var(--accent2); }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 900px) { .toolbar { grid-template-columns: 1fr 1fr; } .toolbar .search { grid-column: 1 / -1; } .toolbar .chip { justify-self: start; } }
+    @media (max-width: 640px) {
+      .brand .tag { display: none; } .topbar .btn-add { display: none; } .status .txt { display: none; } .status { padding: 8px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+      .card .body { padding: 10px 11px 12px; } .card .title { font-size: .84rem; }
+      .row2 { grid-template-columns: 1fr; }
+      .drawer-head { padding-left: 16px; } .drawer-body { padding: 16px; } .drawer-foot { padding-left: 16px; padding-right: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
 </head>
 <body>
-  <!--
-    Sveltia CMS (a drop-in replacement for Netlify/Decap CMS).
-    Reads ./config.yml, signs in with GitHub via Netlify's OAuth provider,
-    and commits edits straight to the GitHub repository. Netlify then rebuilds the site.
-    Pinned version - bump deliberately after testing.
-  -->
-  <script src="https://unpkg.com/@sveltia/cms@0.248.0/dist/sveltia-cms.js" type="module"></script>
+
+<!-- ═══════════════════════ LOGIN ═══════════════════════ -->
+<section id="login">
+  <form class="login-card" id="login-form" novalidate>
+    <img src="/images/cbe-logo.png" alt="" width="72" height="72">
+    <h1>CBE Catalogue</h1>
+    <p class="sub">Chris Barron Engineering website admin</p>
+    <label class="lbl" for="passcode">Passcode</label>
+    <div class="pass-wrap">
+      <input class="field" id="passcode" type="password" autocomplete="current-password" inputmode="text" placeholder="Enter the office passcode" required>
+      <button type="button" class="show" id="toggle-pass" aria-label="Show passcode">Show</button>
+    </div>
+    <p class="err" id="login-err" hidden></p>
+    <button class="btn btn-primary btn-lg" id="login-btn" type="submit">Sign in</button>
+    <p class="login-foot">Forgotten the passcode? Ask TheWebShed.</p>
+  </form>
+</section>
+
+<!-- ═══════════════════════ APP ═══════════════════════ -->
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="/images/cbe-logo.png" alt="" width="40" height="40">
+        <div><div class="name">Chris Barron Engineering</div><div class="tag">Website catalogue</div></div>
+      </div>
+      <div class="spacer"></div>
+      <span class="status" id="status" title="Website status"><span class="dot"></span><span class="txt">Website up to date</span></span>
+      <button class="btn btn-primary btn-add" id="add-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add a bull bar
+      </button>
+      <button class="icon-btn" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+      </button>
+      <div class="menu" id="menu" hidden>
+        <a href="/bull-bars" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg>
+          Open the website
+        </a>
+        <button type="button" id="refresh-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+          Refresh list
+        </button>
+        <div class="sep"></div>
+        <a href="/admin/advanced/" style="color:var(--muted)">Advanced editor (developer)</a>
+        <div class="sep"></div>
+        <button type="button" id="logout-btn">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner" id="setup-banner" hidden>Saving is not switched on yet: TheWebShed still needs to finish the Netlify setup (GitHub token and passcode). You can look around, but changes won't save.</div>
+
+  <div class="toolbar">
+    <div>
+      <label class="sr-only" for="f-make">Make</label>
+      <select class="field" id="f-make"><option value="">All makes</option></select>
+    </div>
+    <div>
+      <label class="sr-only" for="f-model">Model</label>
+      <select class="field" id="f-model" disabled><option value="">All models</option></select>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <label class="sr-only" for="f-q">Search</label>
+      <input class="field" id="f-q" type="search" placeholder="Search bull bars…" autocomplete="off">
+    </div>
+    <button class="chip" id="f-nophoto" type="button" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
+      Missing a photo
+    </button>
+  </div>
+
+  <div class="summary"><h2 id="summary-title">All bull bars</h2><span class="count" id="summary-count"></span></div>
+  <main class="grid" id="grid" aria-live="polite"></main>
+
+  <button class="btn btn-primary fab" id="fab" type="button" aria-label="Add a bull bar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    Add a bull bar
+  </button>
+</div>
+
+<!-- ═══════════════════════ DRAWER ═══════════════════════ -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+  <form id="form" novalidate style="display:contents">
+    <div class="drawer-head">
+      <h2 id="drawer-title">Add a bull bar</h2>
+      <button class="icon-btn" type="button" id="close-btn" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+
+      <div>
+        <label class="lbl">Photo</label>
+        <div class="photo" id="photo">
+          <div class="preview" id="preview">
+            <div class="empty-ph" id="preview-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              Drop a photo here, or choose one below.<br><span style="font-size:.8rem;color:var(--dim)">Phone photos are fine. They are resized automatically.</span>
+            </div>
+            <img id="preview-img" alt="" hidden>
+            <div class="working" id="photo-working" hidden>Preparing photo…</div>
+          </div>
+          <div class="actions">
+            <label class="btn btn-ghost btn-sm" for="photo-file">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
+              Choose photo
+            </label>
+            <input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" class="sr-only">
+            <label class="btn btn-ghost btn-sm" for="photo-camera" id="camera-lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              Take photo
+            </label>
+            <input id="photo-camera" type="file" accept="image/*" capture="environment" class="sr-only">
+            <button class="btn btn-ghost btn-sm" type="button" id="photo-remove" hidden>Remove photo</button>
+          </div>
+        </div>
+        <p class="err" id="photo-err" hidden></p>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label class="lbl" for="e-make">Make <span class="req">*</span></label>
+          <select class="field" id="e-make" required><option value="">Choose a make…</option></select>
+        </div>
+        <div>
+          <label class="lbl" for="e-model">Model <span class="req">*</span></label>
+          <select class="field" id="e-model" required disabled><option value="">Choose a make first</option></select>
+          <p class="hint">Model not listed? <button type="button" id="new-model-btn" style="background:none;border:0;padding:0;color:var(--accent2);font-weight:600;cursor:pointer">Add a new model</button></p>
+        </div>
+      </div>
+
+      <div class="inline-new" id="new-model" hidden>
+        <label class="lbl" for="nm-label">New model for <span id="nm-make">this make</span></label>
+        <div class="row">
+          <input class="field" id="nm-label" type="text" placeholder="e.g. T680 or FH16" maxlength="60">
+          <button class="btn btn-primary" type="button" id="nm-save">Add</button>
+          <button class="btn btn-ghost" type="button" id="nm-cancel">Cancel</button>
+        </div>
+        <p class="err" id="nm-err" hidden></p>
+      </div>
+
+      <div>
+        <label class="lbl" for="e-title">Title <span class="req">*</span></label>
+        <input class="field" id="e-title" type="text" maxlength="160" placeholder="e.g. Volvo FH FUPS Polished Bullbar" required>
+        <p class="hint">What customers see on the card.</p>
+      </div>
+
+      <div>
+        <label class="lbl" for="e-desc">Description</label>
+        <textarea class="field" id="e-desc" maxlength="4000" placeholder="Fitment, FUPS rating, finish, what's included…"></textarea>
+      </div>
+
+      <details class="adv">
+        <summary>Display order (optional)</summary>
+        <div class="inner">
+          <label class="lbl" for="e-order">Position within this model</label>
+          <input class="field" id="e-order" type="number" inputmode="numeric" step="1" min="0" placeholder="Leave blank for alphabetical">
+          <p class="hint">Lower numbers show first on the website (10, 20, 30…).</p>
+        </div>
+      </details>
+
+      <p class="err" id="form-err" hidden></p>
+
+      <div class="confirm" id="confirm" hidden>
+        <p><strong>Remove this bull bar from the website?</strong> This can't be undone from here.</p>
+        <div class="row">
+          <button class="btn btn-danger solid" type="button" id="confirm-yes">Yes, delete it</button>
+          <button class="btn btn-ghost" type="button" id="confirm-no">Keep it</button>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-foot">
+      <button class="btn btn-danger" type="button" id="delete-btn" hidden>Delete</button>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost" type="button" id="cancel-btn">Cancel</button>
+      <button class="btn btn-primary btn-lg" type="submit" id="save-btn">Save</button>
+    </div>
+  </form>
+</aside>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+  /* ─────────────────────────── state ─────────────────────────── */
+  const $ = id => document.getElementById(id);
+  const TOKEN_KEY = 'cbe-admin-token', PENDING_KEY = 'cbe-admin-pending';
+  const PENDING_TTL = 45 * 60 * 1000;
+  const state = {
+    token: lsGet(TOKEN_KEY), configured: true,
+    makes: [], models: [], products: [],
+    pending: lsJson(PENDING_KEY) || {},
+    filter: { make: '', model: '', q: '', nophoto: false },
+    editing: null,      // product being edited (null = new)
+    upload: null,       // { blob, type, dataUrl } new photo
+    removePhoto: false,
+    busy: false, pollTimer: null,
+  };
+  function lsGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+  function lsSet(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} }
+  function lsJson(k) { try { return JSON.parse(lsGet(k) || 'null'); } catch { return null; } }
+  const savePending = () => lsSet(PENDING_KEY, JSON.stringify(state.pending));
+
+  /* ─────────────────────────── api ───────────────────────────── */
+  async function api(path, opts = {}) {
+    const res = await fetch('/api/' + path, {
+      method: opts.method || 'GET',
+      headers: { 'Content-Type': 'application/json', ...(state.token ? { Authorization: 'Bearer ' + state.token } : {}) },
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    });
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (res.status === 401 && path !== 'login') { signOut(true); throw new Error(data.error || 'Please sign in again.'); }
+    if (!res.ok) throw new Error(data.error || ('Request failed (' + res.status + ')'));
+    return data;
+  }
+
+  /* ─────────────────────────── auth ──────────────────────────── */
+  $('toggle-pass').addEventListener('click', () => {
+    const f = $('passcode'); const show = f.type === 'password';
+    f.type = show ? 'text' : 'password'; $('toggle-pass').textContent = show ? 'Hide' : 'Show';
+  });
+  $('login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = $('login-btn'), err = $('login-err');
+    err.hidden = true; btn.disabled = true; btn.textContent = 'Signing in…';
+    try {
+      const { token } = await api('login', { method: 'POST', body: { passcode: $('passcode').value } });
+      state.token = token; lsSet(TOKEN_KEY, token); $('passcode').value = '';
+      await enterApp();
+    } catch (ex) {
+      err.textContent = ex.message; err.hidden = false; $('passcode').focus(); $('passcode').select();
+    } finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+  });
+  function signOut(expired) {
+    state.token = null; lsSet(TOKEN_KEY, null);
+    $('app').hidden = true; $('login').hidden = false; closeDrawer();
+    if (expired) { $('login-err').textContent = 'Your session has ended. Please sign in again.'; $('login-err').hidden = false; }
+    setTimeout(() => $('passcode').focus(), 50);
+  }
+  $('logout-btn').addEventListener('click', () => signOut(false));
+
+  async function enterApp() {
+    $('login').hidden = true; $('app').hidden = false;
+    try { const cfg = await api('config'); state.configured = !!cfg.configured; } catch { state.configured = false; }
+    $('setup-banner').hidden = state.configured;
+    await loadCatalogue();
+  }
+
+  /* ─────────────────────── catalogue + pending ───────────────── */
+  async function loadCatalogue() {
+    try {
+      const res = await fetch('/admin/catalogue.json?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('catalogue.json ' + res.status);
+      const data = await res.json();
+      state.makes = (data.makes || []).slice().sort(byOrderLabel);
+      state.models = (data.models || []).slice().sort(byOrderLabel);
+      state.products = data.products || [];
+      reconcilePending();
+      applyPending();
+      fillMakeSelects();
+      render();
+      updateStatus();
+    } catch (ex) {
+      toast('Could not load the catalogue: ' + ex.message, 'err');
+    }
+  }
+  const byOrderLabel = (a, b) => ((a.order ?? 9999) - (b.order ?? 9999)) || String(a.label || '').localeCompare(String(b.label || ''), 'en', { numeric: true });
+  const byOrderTitle = (a, b) => ((a.order ?? 9999) - (b.order ?? 9999)) || String(a.title || '').localeCompare(String(b.title || ''), 'en', { numeric: true });
+
+  function reconcilePending() {
+    const now = Date.now(); let changed = false;
+    for (const [slug, p] of Object.entries(state.pending)) {
+      const live = state.products.find(x => x.slug === slug);
+      const done = p.action === 'model' ? state.models.some(x => x.slug === p.model.slug)
+        : p.action === 'delete' ? !live
+        : (live && live.updated === p.entry.updated);
+      if (done || now - p.at > PENDING_TTL) { delete state.pending[slug]; delete localPreviews[slug]; changed = true; }
+    }
+    if (changed) savePending();
+  }
+  function applyPending() {
+    for (const [slug, p] of Object.entries(state.pending)) {
+      const i = state.products.findIndex(x => x.slug === slug);
+      if (p.action === 'delete') { if (i >= 0) state.products.splice(i, 1); continue; }
+      const entry = { ...p.entry, slug, pending: true };
+      if (i >= 0) state.products[i] = entry; else state.products.push(entry);
+    }
+    for (const m of Object.values(state.pending)) if (m.model && !state.models.find(x => x.slug === m.model.slug)) state.models.push(m.model);
+  }
+  function setPending(slug, p) { state.pending[slug] = { ...p, at: Date.now() }; savePending(); updateStatus(); }
+  function updateStatus() {
+    const n = Object.keys(state.pending).length;
+    const el = $('status');
+    el.classList.toggle('busy', n > 0);
+    el.querySelector('.txt').textContent = n ? `Publishing ${n} change${n > 1 ? 's' : ''}… about 2 min` : 'Website up to date';
+    el.title = n ? 'Netlify is rebuilding the website with your changes.' : 'Everything you saved is live.';
+    clearInterval(state.pollTimer); state.pollTimer = null;
+    if (n) state.pollTimer = setInterval(loadCatalogue, 30000);
+  }
+
+  /* ─────────────────────────── filters ───────────────────────── */
+  function fillMakeSelects() {
+    for (const sel of [$('f-make'), $('e-make')]) {
+      const keep = sel.value;
+      sel.innerHTML = `<option value="">${sel.id === 'f-make' ? 'All makes' : 'Choose a make…'}</option>` +
+        state.makes.map(m => `<option value="${esc(m.slug)}">${esc(m.label)}</option>`).join('');
+      sel.value = keep;
+    }
+    fillModelSelect($('f-model'), state.filter.make, 'All models');
+  }
+  function fillModelSelect(sel, make, blank) {
+    const models = state.models.filter(m => m.make === make);
+    sel.disabled = !make;
+    sel.innerHTML = `<option value="">${make ? blank : 'Choose a make first'}</option>` +
+      models.map(m => `<option value="${esc(m.slug)}">${esc(m.label)}</option>`).join('');
+  }
+  $('f-make').addEventListener('change', () => { state.filter.make = $('f-make').value; state.filter.model = ''; fillModelSelect($('f-model'), state.filter.make, 'All models'); render(); });
+  $('f-model').addEventListener('change', () => { state.filter.model = $('f-model').value; render(); });
+  $('f-q').addEventListener('input', () => { state.filter.q = $('f-q').value.trim().toLowerCase(); render(); });
+  $('f-nophoto').addEventListener('click', () => { state.filter.nophoto = !state.filter.nophoto; $('f-nophoto').setAttribute('aria-pressed', String(state.filter.nophoto)); render(); });
+  $('refresh-btn').addEventListener('click', () => { closeMenu(); loadCatalogue().then(() => toast('List refreshed.', 'info')); });
+
+  /* ─────────────────────────── render ────────────────────────── */
+  const modelName = slug => (state.models.find(m => m.slug === slug) || {}).name || slug;
+  const localPreviews = {}; // slug -> object URL of a photo uploaded this session (live URL appears after the deploy)
+  const imgSrc = p => localPreviews[p.slug] || (p.image ? (p.image.startsWith('/') ? p.image : '/' + p.image) : '');
+  function render() {
+    const f = state.filter;
+    let list = state.products.filter(p =>
+      (!f.make || p.model.startsWith(f.make + '--')) &&
+      (!f.model || p.model === f.model) &&
+      (!f.nophoto || !p.image) &&
+      (!f.q || (p.title + ' ' + modelName(p.model) + ' ' + (p.description || '')).toLowerCase().includes(f.q)));
+    list.sort((a, b) => modelName(a.model).localeCompare(modelName(b.model), 'en', { numeric: true }) || byOrderTitle(a, b));
+
+    const make = state.makes.find(m => m.slug === f.make);
+    const model = state.models.find(m => m.slug === f.model);
+    $('summary-title').textContent = model ? model.name : make ? make.label : f.nophoto ? 'Missing a photo' : 'All bull bars';
+    $('summary-count').textContent = `${list.length} item${list.length === 1 ? '' : 's'}`;
+
+    const grid = $('grid');
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Nothing here yet.${f.q || f.make || f.nophoto ? ' Try clearing the filters.' : ''}</div>`;
+      return;
+    }
+    grid.innerHTML = list.map(p => `
+      <button class="card" type="button" data-slug="${esc(p.slug)}" aria-label="Edit ${esc(p.title)}">
+        ${p.pending ? '<span class="badge">Publishing…</span>' : ''}
+        <div class="ph">${p.image
+          ? `<img src="${esc(imgSrc(p))}" alt="" loading="lazy">`
+          : `<span class="nophoto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>No photo yet</span>`}</div>
+        <div class="body"><div class="title">${esc(p.title)}</div><div class="model">${esc(modelName(p.model))}</div></div>
+      </button>`).join('');
+  }
+  $('grid').addEventListener('click', e => {
+    const card = e.target.closest('.card'); if (!card) return;
+    const p = state.products.find(x => x.slug === card.dataset.slug);
+    if (p) openDrawer(p);
+  });
+
+  /* ─────────────────────────── menu ──────────────────────────── */
+  $('menu-btn').addEventListener('click', () => { const open = $('menu').hidden; $('menu').hidden = !open; $('menu-btn').setAttribute('aria-expanded', String(open)); });
+  function closeMenu() { $('menu').hidden = true; $('menu-btn').setAttribute('aria-expanded', 'false'); }
+  document.addEventListener('click', e => { if (!e.target.closest('#menu') && !e.target.closest('#menu-btn')) closeMenu(); });
+
+  /* ─────────────────────────── drawer ────────────────────────── */
+  let lastFocus = null;
+  function openDrawer(product) {
+    state.editing = product || null; state.upload = null; state.removePhoto = false;
+    lastFocus = document.activeElement;
+    $('drawer-title').textContent = product ? 'Edit bull bar' : 'Add a bull bar';
+    $('delete-btn').hidden = !product; $('confirm').hidden = true; $('form-err').hidden = true; $('photo-err').hidden = true; $('new-model').hidden = true;
+    $('e-make').value = product ? product.model.split('--')[0] : (state.filter.make || '');
+    fillModelSelect($('e-model'), $('e-make').value, 'Choose a model…');
+    $('e-model').value = product ? product.model : (state.filter.model || '');
+    $('e-title').value = product ? product.title : '';
+    $('e-desc').value = product ? (product.description || '') : '';
+    $('e-order').value = product && product.order != null ? product.order : '';
+    document.querySelector('details.adv').open = !!(product && product.order != null);
+    setPreview(product && product.image ? imgSrc(product) : '');
+    $('save-btn').textContent = product ? 'Save changes' : 'Save bull bar';
+    $('drawer').classList.add('open'); $('scrim').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => (product ? $('e-title') : $('e-make')).focus(), 250);
+  }
+  function closeDrawer() {
+    $('drawer').classList.remove('open'); $('scrim').classList.remove('open');
+    document.body.style.overflow = '';
+    if (state.upload && state.upload.dataUrl) URL.revokeObjectURL(state.upload.dataUrl);
+    state.editing = null; state.upload = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $('add-btn').addEventListener('click', () => openDrawer(null));
+  $('fab').addEventListener('click', () => openDrawer(null));
+  $('close-btn').addEventListener('click', closeDrawer);
+  $('cancel-btn').addEventListener('click', closeDrawer);
+  $('scrim').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('drawer').classList.contains('open')) closeDrawer(); });
+
+  $('e-make').addEventListener('change', () => { fillModelSelect($('e-model'), $('e-make').value, 'Choose a model…'); $('new-model').hidden = true; });
+
+  /* new model inline */
+  $('new-model-btn').addEventListener('click', () => {
+    if (!$('e-make').value) { showErr('form-err', 'Choose a make first, then add the model.'); $('e-make').focus(); return; }
+    $('form-err').hidden = true;
+    $('nm-make').textContent = (state.makes.find(m => m.slug === $('e-make').value) || {}).label || 'this make';
+    $('new-model').hidden = false; $('nm-err').hidden = true; $('nm-label').value = ''; $('nm-label').focus();
+  });
+  $('nm-cancel').addEventListener('click', () => { $('new-model').hidden = true; });
+  $('nm-label').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('nm-save').click(); } });
+  $('nm-save').addEventListener('click', async () => {
+    const label = $('nm-label').value.trim(); if (!label) { showErr('nm-err', 'Type the model name.'); return; }
+    $('nm-save').disabled = true; $('nm-err').hidden = true;
+    try {
+      const m = await api('model', { method: 'POST', body: { make: $('e-make').value, label } });
+      const model = { slug: m.slug, make: m.make, label: m.label, name: m.name, order: null };
+      state.models.push(model);
+      setPending('model:' + m.slug, { action: 'model', model, entry: {} });
+      fillModelSelect($('e-model'), $('e-make').value, 'Choose a model…');
+      $('e-model').value = m.slug; $('new-model').hidden = true;
+      fillModelSelect($('f-model'), state.filter.make, 'All models'); $('f-model').value = state.filter.model;
+      toast(`Added model “${m.name}”.`);
+    } catch (ex) { showErr('nm-err', ex.message); }
+    finally { $('nm-save').disabled = false; }
+  });
+
+  /* ─────────────────────────── photo ─────────────────────────── */
+  function setPreview(src) {
+    const img = $('preview-img');
+    if (src) { img.src = src; img.hidden = false; $('preview-empty').hidden = true; $('photo-remove').hidden = false; }
+    else { img.removeAttribute('src'); img.hidden = true; $('preview-empty').hidden = false; $('photo-remove').hidden = true; }
+  }
+  $('photo-file').addEventListener('change', e => handleFile(e.target.files[0]));
+  $('photo-camera').addEventListener('change', e => handleFile(e.target.files[0]));
+  $('photo-remove').addEventListener('click', () => { state.upload = null; state.removePhoto = true; setPreview(''); });
+  const photoBox = $('photo');
+  ['dragenter', 'dragover'].forEach(ev => photoBox.addEventListener(ev, e => { e.preventDefault(); photoBox.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(ev => photoBox.addEventListener(ev, e => { e.preventDefault(); photoBox.classList.remove('drag'); }));
+  photoBox.addEventListener('drop', e => handleFile(e.dataTransfer.files && e.dataTransfer.files[0]));
+
+  async function handleFile(file) {
+    if (!file) return;
+    $('photo-err').hidden = true; $('photo-working').hidden = false;
+    try {
+      const out = await processImage(file);
+      if (state.upload && state.upload.dataUrl) URL.revokeObjectURL(state.upload.dataUrl);
+      state.upload = out; state.removePhoto = false;
+      setPreview(out.dataUrl);
+    } catch (ex) {
+      showErr('photo-err', 'That file could not be read as a photo. Please use a JPG or PNG.' + (/heic|heif/i.test(file.type + file.name) ? ' (iPhone HEIC photos: change the camera format to “Most compatible”, or share the photo as JPEG.)' : ''));
+    } finally { $('photo-working').hidden = true; $('photo-file').value = ''; $('photo-camera').value = ''; }
+  }
+  async function processImage(file) {
+    const MAX = 1600;
+    let source;
+    try { source = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch { source = await loadImageEl(file); }
+    const scale = Math.min(1, MAX / Math.max(source.width, source.height));
+    const w = Math.max(1, Math.round(source.width * scale)), h = Math.max(1, Math.round(source.height * scale));
+    const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(source, 0, 0, w, h);
+    if (source.close) source.close();
+    let blob = await new Promise(r => canvas.toBlob(r, 'image/webp', 0.82));
+    if (!blob || blob.type !== 'image/webp') blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.84));
+    if (!blob) throw new Error('encode failed');
+    return { blob, type: blob.type, dataUrl: URL.createObjectURL(blob), w, h };
+  }
+  const loadImageEl = file => new Promise((res, rej) => { const url = URL.createObjectURL(file); const img = new Image(); img.onload = () => { URL.revokeObjectURL(url); res(img); }; img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('decode')); }; img.src = url; });
+  const toBase64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(blob); });
+
+  /* ─────────────────────────── save / delete ─────────────────── */
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (state.busy) return;
+    $('form-err').hidden = true;
+    const title = $('e-title').value.trim(), model = $('e-model').value, make = $('e-make').value;
+    if (!make) return fail('Choose the truck make.', 'e-make');
+    if (!model) return fail('Choose the truck model (or add a new one).', 'e-model');
+    if (!title) return fail('Give the bull bar a title.', 'e-title');
+    if (!state.configured) return fail('Saving is not switched on yet. Ask TheWebShed to finish the Netlify setup.');
+
+    const editing = state.editing;
+    const body = {
+      slug: editing ? editing.slug : '', title, model,
+      description: $('e-desc').value.trim(), order: $('e-order').value.trim(),
+      image: editing && !state.removePhoto && !state.upload ? (editing.image || '') : '',
+    };
+    if (editing && (state.upload || state.removePhoto) && editing.image) body.replacedImage = editing.image;
+    if (state.upload) body.upload = { data: await toBase64(state.upload.blob), type: state.upload.type };
+
+    setBusy(true, 'Saving…');
+    try {
+      const r = await api('product', { method: 'POST', body });
+      if (state.upload) { localPreviews[r.slug] = state.upload.dataUrl; state.upload = null; /* keep the object URL alive for the card */ }
+      else if (state.removePhoto) delete localPreviews[r.slug];
+      const entry = { title, model, image: r.image, description: body.description, order: body.order === '' ? null : Number(body.order), updated: r.updated };
+      setPending(r.slug, { action: 'save', entry });
+      const i = state.products.findIndex(x => x.slug === r.slug);
+      const full = { ...entry, slug: r.slug, pending: true };
+      if (i >= 0) state.products[i] = full; else state.products.push(full);
+      render(); closeDrawer();
+      toast(`${editing ? 'Saved' : 'Added'} “${title}”. It will be on the website in about 2 minutes.`);
+    } catch (ex) { fail(ex.message); }
+    finally { setBusy(false); }
+  });
+  function fail(msg, focusId) { showErr('form-err', msg); if (focusId) $(focusId).focus(); return false; }
+  function showErr(id, msg) { const el = $(id); el.textContent = msg; el.hidden = false; }
+  function setBusy(b, label) { state.busy = b; $('save-btn').disabled = b; $('delete-btn').disabled = b; if (label) $('save-btn').textContent = label; else $('save-btn').textContent = state.editing ? 'Save changes' : 'Save bull bar'; }
+
+  $('delete-btn').addEventListener('click', () => { $('confirm').hidden = false; $('confirm').scrollIntoView({ block: 'nearest' }); $('confirm-yes').focus(); });
+  $('confirm-no').addEventListener('click', () => { $('confirm').hidden = true; });
+  $('confirm-yes').addEventListener('click', async () => {
+    const p = state.editing; if (!p || state.busy) return;
+    setBusy(true, 'Deleting…'); $('confirm-yes').disabled = true;
+    try {
+      await api('product', { method: 'DELETE', body: { slug: p.slug, image: p.image || '', title: p.title } });
+      setPending(p.slug, { action: 'delete', entry: {} });
+      state.products = state.products.filter(x => x.slug !== p.slug);
+      render(); closeDrawer();
+      toast(`Deleted “${p.title}”. It disappears from the website in about 2 minutes.`, 'info');
+    } catch (ex) { fail(ex.message); }
+    finally { setBusy(false); $('confirm-yes').disabled = false; }
+  });
+
+  /* ─────────────────────────── misc ──────────────────────────── */
+  function toast(msg, kind) {
+    const el = document.createElement('div'); el.className = 'toast' + (kind ? ' ' + kind : ''); el.textContent = msg;
+    $('toasts').appendChild(el); setTimeout(() => el.remove(), kind === 'err' ? 8000 : 5000);
+  }
+  function esc(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+  if (!/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) $('camera-lbl').hidden = true;
+
+  /* ─────────────────────────── boot ──────────────────────────── */
+  (async () => {
+    if (!state.token) { $('passcode').focus(); return; }
+    try { await api('session'); await enterApp(); }
+    catch { /* api() already signed us out on 401 */ if (state.token) { await enterApp(); } }
+  })();
+})();
+</script>
 </body>
 </html>

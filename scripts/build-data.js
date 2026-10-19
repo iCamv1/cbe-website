@@ -102,6 +102,22 @@ function writeDataJs(dest = path.join(ROOT, 'data.js')) {
   return { data, warnings };
 }
 
-module.exports = { buildData, writeDataJs };
+/**
+ * Snapshot for the /admin page: the same content, but keyed by file slug so the
+ * admin can edit/delete the right file. Written to dist/admin/catalogue.json.
+ */
+function writeCatalogueJson(dest) {
+  const makes = readJsonDir('makes').map(m => ({ slug: m.slug, label: m.label || m.slug, order: m.order ?? null }));
+  const models = readJsonDir('models').map(m => ({ slug: m.slug, make: m.make, label: m.label || '', name: m.name || m.label || m.slug, order: m.order ?? null }));
+  const products = readJsonDir('products').map(p => ({
+    slug: p.slug, title: p.title || '', model: p.model || '', image: p.image || '',
+    description: p.description || '', order: p.order ?? null, updated: p.updated || null,
+  }));
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, JSON.stringify({ generated: new Date().toISOString(), makes, models, products }));
+  console.log(`catalogue.json written (${products.length} products)`);
+}
+
+module.exports = { buildData, writeDataJs, writeCatalogueJson };
 
 if (require.main === module) writeDataJs();

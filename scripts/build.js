@@ -9,7 +9,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { writeDataJs } = require('./build-data');
+const { writeDataJs, writeCatalogueJson } = require('./build-data');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -34,6 +34,8 @@ for (const item of PUBLISH) {
   fs.cpSync(src, path.join(DIST, item), { recursive: true });
   copied++;
 }
+
+writeCatalogueJson(path.join(DIST, 'admin', 'catalogue.json'));
 
 console.log(`dist/ assembled (${copied} items)`);
 if (warnings.length) {

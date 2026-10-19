@@ -1,50 +1,39 @@
 # Updating the bull bars on the CBE website
 
 **Admin link:** https://chris-barron-engineering.netlify.app/admin/
+**Passcode:** ask TheWebShed (keep it private; anyone with it can change the website catalogue).
 
-You sign in with your GitHub account (the one you were invited with). Everything you
-save goes live on the website automatically, usually within 2 minutes.
+Works on a computer, tablet or phone. Everything you save goes live on the website
+automatically, usually within 2 minutes.
 
 ---
 
 ## Adding a new bull bar
 
-1. Open the admin link and click **Sign in with GitHub**.
-2. In the left menu click **Bull Bars & Products**, then **Create** (top right).
-3. Fill in:
-   - **Title** - what customers see, e.g. `Volvo FH FUPS Polished Bullbar`.
-   - **Truck model** - click the box and start typing the make or model (e.g. `Kenworth T6`). Pick the match.
-   - **Photo** - click **Select**, then **Upload** and choose the photo from your computer or phone.
-     Any size is fine; it is shrunk automatically.
-   - **Description** - a few sentences: fitment, FUPS rating, finish, what's included.
-   - **Position** - optional. Leave blank unless you want it to appear before others for that model
-     (lower number = earlier).
-4. Click **Save** (top right). Done - check the website in a couple of minutes.
+1. Open the admin link and type the passcode. (You stay signed in on that device for a month.)
+2. Press **Add a bull bar**.
+3. **Photo**: press **Choose photo** (or **Take photo** on a phone) or drag a photo in.
+   Any size is fine, it is shrunk automatically. Landscape photos of the whole bar on the truck look best.
+4. **Make** and **Model**: choose from the lists. If the model isn't listed, press **Add a new model**,
+   type its name (e.g. `T680`) and press **Add**.
+5. **Title**: what customers see, e.g. `Volvo FH FUPS Polished Bullbar`.
+6. **Description**: a few sentences on fitment, FUPS rating, finish, what's included.
+7. Press **Save bull bar**. A message confirms it, and the badge at the top shows
+   "Publishing… about 2 min" until the website has updated.
 
-## Changing or removing a bull bar
+## Changing or removing one
 
-1. **Bull Bars & Products** -> use the search box at the top, or the **Filter** button to show one make only.
-2. Click the item, make your changes, **Save**.
-3. To remove one: open it and click **Delete** (top right). It disappears from the website after the next update.
+1. Find it: choose the make (and model) at the top, or type in the search box.
+   **Missing a photo** shows the bars that still need one.
+2. Press the bull bar, change what you need, press **Save changes**.
+3. To remove it, press **Delete** (bottom left), then **Yes, delete it**.
 
-## Adding a truck model that isn't in the list
+## Good to know
 
-1. Left menu -> **Truck Models** -> **Create**.
-2. **Make**: pick the brand. **Model name (short)**: what shows on the website, e.g. `T680`.
-   **Full name**: make + model, e.g. `Kenworth T680` (this is what you search for when adding bull bars).
-3. **Save**. Now add the bull bars for it as above.
-
-## Tips
-
-- **Photos**: landscape photos of the whole bull bar on the truck work best. Phone photos are fine.
-- **Can't find a bull bar?** Use the search box - it searches titles - or filter by make.
-- **Made a mistake?** Every save is kept in history. Contact TheWebShed and it can be put back.
-- **Nothing changed on the website after 5 minutes?** Hard-refresh the page (Ctrl + F5). If it still
-  hasn't changed, contact TheWebShed - the automatic publish may have failed.
-- **New brand (make)?** Brands need a small website change for the menu and logo. Email TheWebShed with the brand name and logo.
-
-## Signing in for the first time
-
-1. Accept the GitHub invitation email ("… invited you to cbe-website").
-2. Go to the admin link, click **Sign in with GitHub**, and approve the "CBE Website Admin" app when asked.
-3. You stay signed in on that browser; next time it opens straight into the admin.
+- **Display order**: normally bull bars are listed A to Z within a model. To put one first,
+  open "Display order (optional)" and give it a low number like 10.
+- **New brand (make)?** Brands need a small website change for the menu and logo. Email TheWebShed.
+- **Nothing changed after 5 minutes?** Refresh the website page (Ctrl + F5 on a computer). If it still
+  hasn't changed, contact TheWebShed.
+- **Made a mistake?** Every save is kept in history; TheWebShed can put any earlier version back.
+- **Signing out**: menu (three dots, top right) → Sign out. Do this on shared computers.

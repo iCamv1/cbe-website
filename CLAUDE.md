@@ -15,7 +15,10 @@ Static marketing + product-catalogue website for Chris Barron Engineering (CBE),
 
 ## Content model (the CMS)
 
-The catalogue lives as one JSON file per entry under `/content`, edited by non-technical staff through **Sveltia CMS** at `/admin` (`admin/index.html` + `admin/config.yml`, GitHub backend (repo iCamv1/cbe-website), Netlify OAuth login):
+The catalogue lives as one JSON file per entry under `/content`. Two editors write to it:
+
+- **`/admin`** (`admin/index.html`, what CBE staff use): a single-page, passcode-protected catalogue manager, no framework. It loads `/admin/catalogue.json` (built by `scripts/build-data.js`), resizes photos to WebP in the browser, and calls `/api/*` -> `netlify/functions/catalogue.js`, which makes one Git commit per save using `GITHUB_TOKEN` / `ADMIN_PASSCODE` env vars on Netlify (see docs/SETUP.md 3a). Unpublished saves are overlaid from localStorage until the next deploy.
+- **`/admin/advanced`** (Sveltia CMS, `admin/advanced/config.yml`, GitHub backend repo iCamv1/cbe-website, Netlify OAuth login): full editor for the developer.
 
 ```
 content/makes/<make>.json            { label, order }
@@ -55,4 +58,4 @@ Six standalone pages, each with its own `<head>`, inlined page-specific `<style>
 ## Security notes
 
 - No secrets in the repo. The old `deploy.bat` token was found revoked and removed; deploy via Netlify's GitHub integration or `netlify login`.
-- `/admin` is `noindex` and only works for GitHub accounts with write access to the repo.
+- `/admin` is `noindex`; the simple admin needs the passcode, the advanced one a GitHub account with write access. The GitHub token used by the function exists only in Netlify env vars.

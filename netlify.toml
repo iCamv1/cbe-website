@@ -10,6 +10,16 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# The simple admin at /admin saves through this function (see netlify/functions/catalogue.js).
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/catalogue/:splat"
+  status = 200
+
 # Serve /bull-bars, /about etc. without the .html (Netlify "pretty URLs" also does this,
 # this just makes it explicit and independent of the asset-optimisation toggle).
 [[redirects]]

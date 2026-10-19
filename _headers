@@ -20,3 +20,7 @@
 /admin/*
   X-Robots-Tag: noindex, nofollow
   X-Frame-Options: DENY
+
+# The admin's catalogue snapshot changes every deploy; never cache it.
+/admin/catalogue.json
+  Cache-Control: no-store
