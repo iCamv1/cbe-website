@@ -77,18 +77,23 @@
 </div>
 
     <!-- Page Hero -->
-    <section class="page-hero" style="background-image: url('images/weld.jpg'); background-size: cover; background-position: center; --hero-brightness: brightness(0.2);">
-        <div class="page-hero-overlay"></div>
-        <div class="page-hero-content">
-            <span class="eyebrow">Quality & Compliance</span>
-            <h1>Engineering Integrity. Every Bar.</h1>
-            <p>DOTARS-certified, ADR 84/00 compliant. Our bull bars are tested to twice the required standard.</p>
-        </div>
+    <section class="page-hero" aria-label="Page hero">
+      <div class="page-hero-bg" style="background-image:url('images/factory.jpg');background-position:center 40%"></div>
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <div class="page-hero-eyebrow reveal">Quality &amp; Compliance</div>
+        <h1 class="page-hero-title reveal reveal-delay-1">Engineering Integrity. Every Bar.</h1>
+        <p class="page-hero-body reveal reveal-delay-2">DOTARS-certified, ADR 84/00 compliant. Our bull bars are tested to twice the required standard.</p>
+      </div>
     </section>
 
     <!-- Certification Cards Grid -->
     <section class="section">
         <div class="container">
+            <div class="text-center reveal">
+                <span class="section-label">Certified &amp; Tested</span>
+                <h2 class="section-title">Compliance You Can Count On</h2>
+            </div>
             <div class="cert-grid">
                 <div class="cert-card">
                     <div class="cert-icon">🏛️</div>
@@ -140,7 +145,10 @@
     <!-- Quality Items Grid -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Our Commitment to Excellence</h2>
+            <div class="text-center reveal">
+                <span class="section-label">Our Standards</span>
+                <h2 class="section-title">Our Commitment to Excellence</h2>
+            </div>
             <div class="quality-grid">
                 <div class="quality-item">
                     <h3>No Butt Welds</h3>
@@ -183,12 +191,15 @@
     </section>
 
     <!-- Factory Strip -->
-    <section class="factory-strip" style="background-image: url('images/factory.jpg'); background-size: cover; background-position: center;">
-        <div class="factory-strip-overlay"></div>
-        <div class="factory-strip-content">
-            <p>Our Wingfield factory — where precision meets tradition.</p>
+    <div class="factory-strip">
+      <img src="images/factory.jpg" alt="CBE factory, Wingfield SA" loading="lazy" width="1920" height="1440">
+      <div class="factory-strip-overlay">
+        <div class="factory-strip-text reveal">
+          <h2>Our Wingfield Factory</h2>
+          <p>Where precision meets tradition. CNC-cut, hand-welded and polished under one roof in Adelaide.</p>
         </div>
-    </section>
+      </div>
+    </div>
 
     <!-- CTA Section -->
     <section class="section">
@@ -260,7 +271,10 @@
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Chris Barron Engineering Pty. Ltd. | Australian Made &amp; Family Owned</span>
-      <span class="footer-aus">🇦🇺 Made in Adelaide, SA</span>
+      <div class="footer-bottom-right">
+        <span class="footer-aus">🇦🇺 Made in Adelaide, SA</span>
+        <span class="footer-credit">Website by <a href="https://www.thewebshed.net" target="_blank" rel="noopener">TheWebShed</a></span>
+      </div>
     </div>
   </div>
 </footer>
