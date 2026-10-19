@@ -466,6 +466,7 @@
   }
   function applyPending() {
     for (const [slug, p] of Object.entries(state.pending)) {
+      if (p.action === 'model') continue;
       const i = state.products.findIndex(x => x.slug === slug);
       if (p.action === 'delete') { if (i >= 0) state.products.splice(i, 1); continue; }
       const entry = { ...p.entry, slug, pending: true };
