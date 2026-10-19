@@ -1,0 +1,11 @@
+# Build output (Netlify builds this from /content on every deploy)
+dist/
+data.js
+
+# Local-only
+_images-original/
+.netlify/
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Outer blue background circle -->
+  <circle cx="100" cy="100" r="100" fill="#027EA6"/>
+  <!-- White inner circle -->
+  <circle cx="100" cy="100" r="86" fill="#ffffff"/>
+
+  <!-- Bull skull silhouette -->
+  <g fill="#001B4C">
+    <!-- Left horn -->
+    <path d="M62 78 C48 60 38 45 42 35 C46 25 58 28 66 40 C70 47 72 58 72 68 Z"/>
+    <!-- Right horn -->
+    <path d="M138 78 C152 60 162 45 158 35 C154 25 142 28 134 40 C130 47 128 58 128 68 Z"/>
+    <!-- Horn tips - left curl -->
+    <path d="M42 35 C38 28 42 22 48 26 C52 29 50 36 46 36 Z"/>
+    <!-- Horn tips - right curl -->
+    <path d="M158 35 C162 28 158 22 152 26 C148 29 150 36 154 36 Z"/>
+    <!-- Skull main body -->
+    <ellipse cx="100" cy="105" rx="34" ry="38"/>
+    <!-- Top of skull / forehead -->
+    <ellipse cx="100" cy="82" rx="30" ry="20"/>
+    <!-- Nose area -->
+    <ellipse cx="100" cy="132" rx="22" ry="14"/>
+    <!-- Eye sockets (negative space) -->
+    <ellipse cx="86" cy="96" rx="8" ry="7" fill="#ffffff"/>
+    <ellipse cx="114" cy="96" rx="8" ry="7" fill="#ffffff"/>
+    <!-- Nose holes (negative space) -->
+    <ellipse cx="93" cy="133" rx="5" ry="5" fill="#ffffff"/>
+    <ellipse cx="107" cy="133" rx="5" ry="5" fill="#ffffff"/>
+    <!-- Bridge between eyes -->
+    <rect x="94" y="90" width="12" height="6" rx="3" fill="#001B4C"/>
+    <!-- Cheekbones -->
+    <ellipse cx="74" cy="110" rx="10" ry="6"/>
+    <ellipse cx="126" cy="110" rx="10" ry="6"/>
+  </g>
+
+  <!-- Curved text: "Chris Barron" top -->
+  <path id="topArc" d="M 28,100 A 72,72 0 0,1 172,100" fill="none"/>
+  <text font-family="'Fira Sans', Arial, sans-serif" font-size="18" font-weight="700" fill="#001B4C" letter-spacing="1">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">Chris Barron</textPath>
+  </text>
+
+  <!-- "Est. 1978" centre text -->
+  <text x="100" y="72" text-anchor="middle" font-family="'Fira Sans', Arial, sans-serif" font-size="12" font-weight="700" fill="#001B4C" letter-spacing="1">Est. 1978</text>
+
+  <!-- Curved text: "Engineering Pty Ltd" bottom -->
+  <path id="bottomArc" d="M 22,100 A 78,78 0 0,0 178,100" fill="none"/>
+  <text font-family="'Fira Sans', Arial, sans-serif" font-size="15" font-weight="700" fill="#001B4C" letter-spacing="0.5">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">Engineering Pty Ltd</textPath>
+  </text>
+
+  <!-- Small decorative diamond bottom -->
+  <polygon points="100,188 104,192 100,196 96,192" fill="#027EA6" opacity="0.6"/>
+</svg>

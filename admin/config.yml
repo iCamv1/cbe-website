@@ -1,0 +1,192 @@
+# Sveltia CMS configuration for the Chris Barron Engineering website.
+# Docs: https://sveltiacms.app/en/docs/  (Decap/Netlify CMS compatible)
+#
+# How content flows:
+#   /admin  ->  edits JSON files in /content  ->  commit to GitHub  ->  Netlify build
+#   ->  scripts/build.js regenerates data.js  ->  site shows the new bull bar.
+
+backend:
+  name: github
+  repo: thewebshed/cbe-website   # <-- GitHub owner/repo that Netlify deploys from
+  branch: main
+  commit_messages:
+    create: "Add {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Delete {{collection}}: {{slug}}"
+    uploadMedia: "Upload photo: {{path}}"
+    deleteMedia: "Delete photo: {{path}}"
+
+site_url: https://chris-barron-engineering.netlify.app
+display_url: https://chris-barron-engineering.netlify.app
+logo_url: /images/cbe-logo.png
+
+# Where uploaded photos go, and the URL path they are served from.
+media_folder: images/bull-bars
+public_folder: /images/bull-bars
+
+# Photos are resized and converted in the browser *before* upload, so a 6 MB phone
+# photo lands in the repository as a ~150 KB WebP. No manual resizing needed.
+media_libraries:
+  default:
+    config:
+      max_file_size: 20971520      # 20 MB cap on the original file picked
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 82
+          width: 1600
+          height: 1600
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  # ───────────────────────────── BULL BARS ─────────────────────────────
+  - name: products
+    label: Bull Bars & Products
+    label_singular: Bull Bar
+    description: >-
+      Every bull bar, bumper and accessory shown on the website. Pick the truck model,
+      give it a title, add a photo and a short description. Changes go live a couple of
+      minutes after you press Save.
+    folder: content/products
+    create: true
+    delete: true
+    format: json
+    extension: json
+    identifier_field: title
+    slug: "{{model}}--{{slug}}-{{uuid_shorter}}"
+    media_folder: /images/bull-bars/uploads
+    public_folder: /images/bull-bars/uploads
+    summary: "{{title}}"
+    thumbnail: image
+    sortable_fields:
+      fields: [title, model, order]
+      default:
+        field: model
+        direction: ascending
+    view_filters:
+      - { label: "Volvo",          field: model, pattern: "^volvo--" }
+      - { label: "Kenworth",       field: model, pattern: "^kenworth--" }
+      - { label: "Scania",         field: model, pattern: "^scania--" }
+      - { label: "Mack",           field: model, pattern: "^mack--" }
+      - { label: "MAN",            field: model, pattern: "^man--" }
+      - { label: "Freightliner",   field: model, pattern: "^freightliner--" }
+      - { label: "Isuzu",          field: model, pattern: "^isuzu--" }
+      - { label: "Western Star",   field: model, pattern: "^western-star--" }
+      - { label: "Hino",           field: model, pattern: "^hino--" }
+      - { label: "Mercedes-Benz",  field: model, pattern: "^mercedes--" }
+      - { label: "DAF",            field: model, pattern: "^daf--" }
+      - { label: "Fuso",           field: model, pattern: "^fuso--" }
+      - { label: "UD Trucks",      field: model, pattern: "^ud--" }
+      - { label: "Bus & Coach",    field: model, pattern: "^bus-and-coach--" }
+      - { label: "Accessories",    field: model, pattern: "^accessories--" }
+      - { label: "Missing a photo", field: image, empty: true }
+    view_groups:
+      - { label: "Truck model", field: model }
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+        hint: "What customers see on the card, e.g. “Volvo FH FUPS Polished Bullbar”."
+      - name: model
+        label: Truck model
+        widget: relation
+        collection: models
+        value_field: "{{slug}}"
+        display_fields: [name]
+        search_fields: [name, label]
+        required: true
+        hint: "Start typing the make or model to search. Can't find it? Add it under “Truck Models” first."
+      - name: image
+        label: Photo
+        widget: image
+        required: false
+        choose_url: false
+        hint: "Landscape photos look best. Big phone photos are fine - they are shrunk automatically."
+      - name: description
+        label: Description
+        widget: text
+        required: false
+        hint: "A few sentences: fitment, FUPS rating, finish, what's included."
+      - name: order
+        label: Position
+        widget: number
+        value_type: int
+        required: false
+        hint: "Optional. Lower numbers show first within the model (e.g. 10, 20, 30). Leave blank to sort alphabetically after the numbered ones."
+
+  # ───────────────────────────── TRUCK MODELS ─────────────────────────────
+  - name: models
+    label: Truck Models
+    label_singular: Truck Model
+    description: >-
+      The models in the “Select Model” dropdown, grouped by make. Add one here before
+      adding bull bars for a model that isn't listed yet.
+    folder: content/models
+    create: true
+    delete: true
+    format: json
+    extension: json
+    identifier_field: label
+    slug: "{{make}}--{{slug}}"
+    summary: "{{name}}"
+    sortable_fields: [name, make, order]
+    view_groups:
+      - { label: "Make", field: make }
+    fields:
+      - name: make
+        label: Make
+        widget: relation
+        collection: makes
+        value_field: "{{slug}}"
+        display_fields: [label]
+        search_fields: [label]
+        required: true
+      - name: label
+        label: Model name (short)
+        widget: string
+        required: true
+        hint: "Shown on the website, e.g. “FH16” or “T610 SAR”."
+      - name: name
+        label: Full name (make + model)
+        widget: string
+        required: true
+        hint: "Used in the admin dropdowns, e.g. “Volvo FH16”."
+      - name: order
+        label: Position
+        widget: number
+        value_type: int
+        required: false
+        hint: "Optional. Lower numbers show first in the dropdown."
+
+  # ───────────────────────────── MAKES ─────────────────────────────
+  - name: makes
+    label: Makes (Brands)
+    label_singular: Make
+    description: >-
+      The truck brands. Rarely changes - the website's menu and brand logos are
+      hand-built, so adding a brand here also needs a small website update.
+    folder: content/makes
+    create: true
+    delete: false
+    format: json
+    extension: json
+    identifier_field: label
+    slug: "{{slug}}"
+    summary: "{{label}}"
+    sortable_fields: [label, order]
+    fields:
+      - name: label
+        label: Brand name
+        widget: string
+        required: true
+      - name: order
+        label: Position
+        widget: number
+        value_type: int
+        required: false
+        hint: "Lower numbers show first in the “Select Make” dropdown."

@@ -1,0 +1,30 @@
+# Netlify build settings for the Chris Barron Engineering website.
+# Netlify reads this file from the repository root on every deploy.
+
+[build]
+  # Regenerates data.js from /content and assembles the publishable site in /dist.
+  # Uses only Node built-ins - there is no npm install.
+  command = "node scripts/build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Serve /bull-bars, /about etc. without the .html (Netlify "pretty URLs" also does this,
+# this just makes it explicit and independent of the asset-optimisation toggle).
+[[redirects]]
+  from = "/bull-bars"
+  to = "/bull-bars.html"
+  status = 200
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+[[redirects]]
+  from = "/quality"
+  to = "/quality.html"
+  status = 200
