@@ -125,7 +125,7 @@ ul{list-style:none}
 
 /* ── HERO ─────────────────────────────────────────────────────── */
 .hero-v2{min-height:100vh;min-height:100svh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:72px}
-.hero-bg-img{position:absolute;inset:0;background-image:url('images/factory.jpg');background-size:cover;background-position:center;filter:brightness(0.25) saturate(0.6)}
+.hero-bg-img{position:absolute;inset:0;background-image:url('images/factory.webp');background-size:cover;background-position:center;filter:brightness(0.25) saturate(0.6)}
 .hero-gradient{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,27,76,0.8) 0%,rgba(13,15,20,0.4) 60%,rgba(2,126,166,0.15) 100%)}
 .hero-grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,216,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,0.03) 1px,transparent 1px);background-size:60px 60px}
 .hero-content-wrap{position:relative;z-index:2;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
@@ -335,9 +335,9 @@ ul{list-style:none}
 .map-embed{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);margin-top:16px}
 
 /* ── FOOTER ───────────────────────────────────────────────────── */
-.site-footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 0 0}
-.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.footer-col h4{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px}
+.site-footer{background:var(--bg2);border-top:1px solid var(--border);padding:56px 0 0}
+.footer-grid{display:grid;grid-template-columns:1.5fr .9fr 1.2fr;gap:48px;margin-bottom:36px}
+.footer-col h3,.footer-col h4{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px}
 .footer-logo-wrap{display:flex;align-items:center;gap:12px;margin-bottom:20px}
 .footer-logo-wrap img{width:56px;height:56px;border-radius:50%}
 .footer-logo-name{font-size:1rem;font-weight:800;color:var(--white);line-height:1.2}
@@ -510,7 +510,7 @@ ul{list-style:none}
 /* — Footer alias (.footer vs .site-footer) ——————————————————————— */
 .footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 0 0}
 .footer>.container>.footer-grid{grid-template-columns:1fr 1fr 1fr}
-.footer-col h4{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px}
+.footer-col h3,.footer-col h4{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px}
 .footer-col p{font-size:0.875rem;color:var(--text-muted);line-height:1.7}
 .footer .footer-bottom{border-top:1px solid var(--border);padding:20px 0}
 .footer .footer-bottom p{font-size:0.8rem;color:var(--text-dim)}
@@ -678,7 +678,7 @@ h1,h2,h3,.hero-h1,.section-title,.page-hero-title,.stat-number,.why-title,.logo-
 .btn{font-weight:600;letter-spacing:0;font-size:.95rem}
 .btn-header-cta{font-weight:600!important;font-size:.9rem!important}
 .nav-link{font-weight:500}
-.section-label,.hero-badge,.hsc-title,.hsc-label,.footer-col h4,.fc-label,.stat-label,.timeline-year,.page-hero-eyebrow,.eyebrow{letter-spacing:.08em;font-weight:600}
+.section-label,.hero-badge,.hsc-title,.hsc-label,.footer-col h3,.footer-col h4,.fc-label,.stat-label,.timeline-year,.page-hero-eyebrow,.eyebrow{letter-spacing:.08em;font-weight:600}
 .footer-body,.footer-links a,.footer-contact-item{font-size:.95rem}
 .factory-strip-text{max-width:640px}
 .factory-strip-text h2{font-size:clamp(1.5rem,2.8vw,2.2rem)}
@@ -696,3 +696,18 @@ h1,h2,h3,.hero-h1,.section-title,.page-hero-title,.stat-number,.why-title,.logo-
 .has-spotlight .why-card::before,.has-spotlight .product-card::before,.has-spotlight .cert-card::before,.has-spotlight .quick-contact-card::before,.has-spotlight .cta-card::before,.has-spotlight .quality-item::before,.has-spotlight .finish-card::before,.has-spotlight .fb-card::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .35s ease;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(0,180,216,.16),rgba(0,180,216,.04) 40%,transparent 65%)}
 .has-spotlight .why-card:hover::before,.has-spotlight .product-card:hover::before,.has-spotlight .cert-card:hover::before,.has-spotlight .quick-contact-card:hover::before,.has-spotlight .cta-card:hover::before,.has-spotlight .quality-item:hover::before,.has-spotlight .finish-card:hover::before,.has-spotlight .fb-card:hover::before{opacity:1}
 .has-spotlight .why-card>*,.has-spotlight .cert-card>*,.has-spotlight .quick-contact-card>*,.has-spotlight .cta-card>*,.has-spotlight .quality-item>*,.has-spotlight .fb-card>*{position:relative;z-index:1}
+
+/* ── Footer: brand strip (replaces the tall brand column) ───────── */
+.footer-makes{display:flex;align-items:flex-start;gap:10px 28px;flex-wrap:wrap;padding:18px 0;border-top:1px solid var(--border)}
+.footer-makes-label{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;padding-top:3px}
+.footer-makes-links{display:flex;flex-wrap:wrap;gap:6px 0;flex:1;min-width:0}
+.footer-makes-links a{font-size:.82rem;color:var(--text-muted);padding:2px 10px;border-right:1px solid var(--border);line-height:1.3;transition:color .2s;white-space:nowrap}
+.footer-makes-links a:first-child{padding-left:0}
+.footer-makes-links a:last-child{border-right:0}
+.footer-makes-links a:hover{color:var(--white)}
+.footer-makes-all{color:var(--accent2)!important;font-weight:600}
+@media (max-width: 900px){.footer-grid{grid-template-columns:1fr 1fr}.footer-grid .footer-col:first-child{grid-column:1 / -1}}
+@media (max-width: 640px){.site-footer{padding-top:40px}.footer-grid{grid-template-columns:1fr;gap:28px;margin-bottom:24px}.footer-makes{flex-direction:column;gap:8px}.footer-makes-links a{padding:2px 10px}.footer-makes-links a:first-child{padding-left:0}}
+/* Hero photos: smaller WebP on phones */
+@media (max-width: 900px){.hero-bg-img{background-image:url('images/factory-1280.webp')}}
+@media (max-width: 640px){body.has-finder-cta .site-footer .footer-bottom{padding-bottom:84px}}

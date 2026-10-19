@@ -14,7 +14,8 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Mono:wght@400;500&display=swap">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Mono:wght@400;500&display=swap"></noscript>
   <link rel="stylesheet" href="style.css">
   <style>
     /* Facebook section */
@@ -214,7 +215,7 @@
       <!-- Right: Image with Badge -->
       <div class="about-image-wrap reveal reveal-delay-2">
         <div class="about-image-container">
-          <img src="images/factory.jpg" alt="CBE Factory, Wingfield Adelaide" loading="lazy">
+          <img src="images/factory.webp" srcset="images/factory-1280.webp 1280w, images/factory.webp 1920w" sizes="(max-width: 900px) 100vw, 50vw" alt="CBE Factory, Wingfield Adelaide" loading="lazy" width="1920" height="1440">
           <div class="about-image-badge">Est. 1978</div>
         </div>
       </div>
@@ -265,7 +266,7 @@
 
 <!-- FACTORY STRIP -->
 <div class="factory-strip">
-  <img src="images/factory-street.jpg" alt="CBE factory on Capelli Road, Wingfield" loading="lazy" width="1920" height="1440">
+  <img src="images/factory-street.webp" srcset="images/factory-street-1280.webp 1280w, images/factory-street.webp 1920w" sizes="(max-width: 900px) 100vw, 60vw" alt="CBE factory on Capelli Road, Wingfield" loading="lazy" width="1920" height="1440">
   <div class="factory-strip-overlay">
     <div class="factory-strip-text reveal">
       <h2>Visit Our Factory</h2>
@@ -347,26 +348,7 @@
         </div>
       </div>
       <div class="footer-col">
-        <h4>Bull Bars</h4>
-        <div class="footer-links">
-          <a href='/bull-bars?make=volvo'>Volvo</a>
-          <a href='/bull-bars?make=hino'>Hino</a>
-          <a href='/bull-bars?make=kenworth'>Kenworth</a>
-          <a href='/bull-bars?make=scania'>Scania</a>
-          <a href='/bull-bars?make=western-star'>Western Star</a>
-          <a href='/bull-bars?make=mack'>Mack</a>
-          <a href='/bull-bars?make=mercedes'>Mercedes-Benz</a>
-          <a href='/bull-bars?make=man'>MAN</a>
-          <a href='/bull-bars?make=daf'>DAF</a>
-          <a href='/bull-bars?make=freightliner'>Freightliner</a>
-          <a href='/bull-bars?make=fuso'>Fuso</a>
-          <a href='/bull-bars?make=isuzu'>Isuzu</a>
-          <a href='/bull-bars?make=ud'>UD Trucks</a>
-          <a href='/bull-bars?make=bus-and-coach'>Bus &amp; Coach</a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
+        <h3>Company</h3>
         <div class="footer-links">
           <a href='/about'>About Us</a>
           <a href='/quality'>Quality &amp; Compliance</a>
@@ -375,14 +357,34 @@
         </div>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h3>Contact</h3>
         <div class="footer-contact-item"><span class="fc-label">Sales</span><span class="fc-val"><a href="tel:0881625347">(08) 8162 5347</a></span></div>
         <div class="footer-contact-item"><span class="fc-label">Mobile</span><span class="fc-val"><a href="tel:0418827109">0418 827 109</a></span></div>
         <div class="footer-contact-item"><span class="fc-label">Admin</span><span class="fc-val"><a href="tel:0881625284">(08) 8162 5284</a></span></div>
         <div class="footer-contact-item"><span class="fc-label">Email</span><span class="fc-val"><a href="mailto:admin@chrisbarronengineering.com.au">admin@chrisbarronengineering.com.au</a></span></div>
-        <div class="footer-contact-item"><span class="fc-label">Address</span><span class="fc-val">3 Capelli Road, Wingfield<br>Adelaide SA 5013</span></div>
       </div>
     </div>
+    <nav class="footer-makes" aria-label="Bull bars by make">
+      <span class="footer-makes-label">Bull bars by make</span>
+      <div class="footer-makes-links">
+        <a href='/bull-bars?make=volvo'>Volvo</a>
+        <a href='/bull-bars?make=kenworth'>Kenworth</a>
+        <a href='/bull-bars?make=scania'>Scania</a>
+        <a href='/bull-bars?make=mack'>Mack</a>
+        <a href='/bull-bars?make=man'>MAN</a>
+        <a href='/bull-bars?make=freightliner'>Freightliner</a>
+        <a href='/bull-bars?make=isuzu'>Isuzu</a>
+        <a href='/bull-bars?make=western-star'>Western Star</a>
+        <a href='/bull-bars?make=hino'>Hino</a>
+        <a href='/bull-bars?make=mercedes'>Mercedes-Benz</a>
+        <a href='/bull-bars?make=daf'>DAF</a>
+        <a href='/bull-bars?make=fuso'>Fuso</a>
+        <a href='/bull-bars?make=ud'>UD Trucks</a>
+        <a href='/bull-bars?make=bus-and-coach'>Bus &amp; Coach</a>
+        <a href='/bull-bars?make=accessories'>Accessories</a>
+        <a href='/bull-bars' class="footer-makes-all">All makes</a>
+      </div>
+    </nav>
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Chris Barron Engineering Pty. Ltd. | Australian Made &amp; Family Owned</span>
       <div class="footer-bottom-right">
