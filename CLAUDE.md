@@ -54,6 +54,9 @@ Six standalone pages, each with its own `<head>`, inlined page-specific `<style>
 - Data strings rendered into HTML in the inline scripts go through the local `escHtml` / `escAttr` helpers.
 - Canonical URLs, sitemap and `og:image` point at `https://www.custombullbars.com.au` (the production domain Google has indexed for years; `chrisbarronengineering.com.au` is a redirect alias to it). The Netlify site is `chris-barron-engineering.netlify.app`.
 - Product photos were batch-optimised (max 1600px, JPEG q80). Originals are in `_images-original/` (git-ignored) and a sibling backup folder.
+- The finder loads catalogue photos through **Netlify Image CDN** (`/.netlify/images?url=...&w=...`, see `cdnImg()` in `bull-bars.html`) when served from a Netlify or production hostname, falling back to the raw file locally or on error. Hero photos are WebP with 1280/768px variants.
+- `_redirects` is **generated** by `scripts/build-redirects.js` (old Joomla URLs from custombullbars.com.au -> new pages; photo pages deep-link with `?p=<hash>`). Edit the script, not the file.
+- `fx.js` starts the WebGL sheen only after `load` + idle; keep it that way (the shader compile was the biggest blocking task on phones).
 
 ## Security notes
 
