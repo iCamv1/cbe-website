@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Start here
+
+`docs/STATUS.md` records where the project is up to (what is live, open items, decisions, where the handover folder is). Read it first in a new session and update it whenever work ships.
+
 ## What this is
 
 Static marketing + product-catalogue website for Chris Barron Engineering (CBE), an Adelaide truck bull bar manufacturer. Plain HTML/CSS/vanilla JS with **one small Node build step** (built-ins only, no npm install, no package.json, no tests).
