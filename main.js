@@ -69,7 +69,7 @@ function initScrollAnimations() {
 function initCounters() {
   const els = document.querySelectorAll('[data-count]');
   if (!els.length) return;
-  const finish = el => { el.textContent = (el.dataset.prefix || '') + parseInt(el.dataset.count, 10).toLocaleString() + (el.dataset.suffix || ''); };
+  const finish = el => { el.textContent = (el.dataset.prefix || '') + parseInt(el.dataset.count, 10) + (el.dataset.suffix || ''); };
   if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
     els.forEach(finish);
     return;
@@ -85,7 +85,7 @@ function initCounters() {
       const step = Math.ceil(target / 60);
       const timer = setInterval(() => {
         current = Math.min(current + step, target);
-        el.textContent = prefix + current.toLocaleString() + suffix;
+        el.textContent = prefix + current + suffix;
         if (current >= target) clearInterval(timer);
       }, 20);
       obs.unobserve(el);
