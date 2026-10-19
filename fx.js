@@ -10,10 +10,11 @@
   'use strict';
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData = navigator.connection && navigator.connection.saveData;
+  const lowEnd = navigator.deviceMemory && navigator.deviceMemory <= 2;
 
   /* ── 1. Hero sheen ───────────────────────────────────────────── */
   function initHeroSheen() {
-    if (reduceMotion || saveData) return;
+    if (reduceMotion || saveData || lowEnd) return;
     const hero = document.querySelector('.hero-v2, .finder-hero');
     const under = hero && (hero.querySelector('.hero-bg-img') || hero.querySelector('.finder-hero-bg'));
     if (!hero || !under) return;
@@ -93,6 +94,12 @@
     document.body.classList.add('has-spotlight');
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { initHeroSheen(); initCardSpotlight(); });
-  else { initHeroSheen(); initCardSpotlight(); }
+  // The spotlight is cheap, so it starts straight away. The shader compile is not, so the sheen
+  // waits until the page has fully loaded and the main thread is idle: nothing it does should
+  // delay the first paint or the finder becoming usable.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initCardSpotlight);
+  else initCardSpotlight();
+  const whenIdle = fn => ('requestIdleCallback' in window) ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 800);
+  if (document.readyState === 'complete') whenIdle(initHeroSheen);
+  else window.addEventListener('load', () => whenIdle(initHeroSheen), { once: true });
 })();

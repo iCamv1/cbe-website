@@ -710,4 +710,5 @@ h1,h2,h3,.hero-h1,.section-title,.page-hero-title,.stat-number,.why-title,.logo-
 @media (max-width: 640px){.site-footer{padding-top:40px}.footer-grid{grid-template-columns:1fr;gap:28px;margin-bottom:24px}.footer-makes{flex-direction:column;gap:8px}.footer-makes-links a{padding:2px 10px}.footer-makes-links a:first-child{padding-left:0}}
 /* Hero photos: smaller WebP on phones */
 @media (max-width: 900px){.hero-bg-img{background-image:url('images/factory-1280.webp')}}
+@media (max-width: 600px){.hero-bg-img{background-image:url('images/factory-768.webp')}}
 @media (max-width: 640px){body.has-finder-cta .site-footer .footer-bottom{padding-bottom:84px}}
