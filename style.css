@@ -39,7 +39,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
 html{font-size:17px}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;overflow-x:clip}
 img{max-width:100%;display:block}
 a{color:var(--accent2);text-decoration:none;transition:color var(--transition)}
 a:hover{color:var(--white)}
