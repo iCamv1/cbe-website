@@ -7,7 +7,7 @@
 
 backend:
   name: github
-  repo: thewebshed/cbe-website   # <-- GitHub owner/repo that Netlify deploys from
+  repo: iCamv1/cbe-website   # <-- GitHub owner/repo that Netlify deploys from
   branch: main
   commit_messages:
     create: "Add {{collection}}: {{slug}}"

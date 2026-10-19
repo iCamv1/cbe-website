@@ -7,7 +7,7 @@ GitHub / Netlify dashboards. Allow about 30 minutes.
 
 ```
 Admin (/admin)  ->  commits JSON to GitHub  ->  Netlify builds  ->  live site
-                    (thewebshed/cbe-website)    (node scripts/build.js)
+                    (iCamv1/cbe-website)    (node scripts/build.js)
 ```
 
 - Site: https://chris-barron-engineering.netlify.app (Netlify site id `0097b08c-08ac-4470-856b-a1d44c525b51`)
@@ -17,12 +17,12 @@ Admin (/admin)  ->  commits JSON to GitHub  ->  Netlify builds  ->  live site
 
 ## 1. GitHub repository
 
-If the repo was created for you (`thewebshed/cbe-website`, private) skip to step 2. Otherwise:
+If the repo was created for you (`iCamv1/cbe-website`, private) skip to step 2. Otherwise:
 
 ```
 cd "cbe-website-v2"
 git init -b main && git add -A && git commit -m "CBE website with Sveltia CMS"
-gh repo create thewebshed/cbe-website --private --source . --push
+gh repo create iCamv1/cbe-website --private --source . --push
 ```
 
 If you use a different owner/name, change `backend.repo` in `admin/config.yml`.
@@ -54,7 +54,7 @@ From now on `deploy.bat` is only a fallback. The old hard-coded Netlify token wa
 ## 4. Give the CBE admin access
 
 1. Have her create a free GitHub account (e.g. with `admin@chrisbarronengineering.com.au`). Two-factor via the GitHub mobile app or SMS is fine.
-2. GitHub -> `thewebshed/cbe-website` -> **Settings -> Collaborators -> Add people** -> her username -> role **Write**. She accepts the email invitation.
+2. GitHub -> `iCamv1/cbe-website` -> **Settings -> Collaborators -> Add people** -> her username -> role **Write**. She accepts the email invitation.
 3. Send her `docs/ADMIN-GUIDE.md` (also published as a web page - see the hand-over message) and the admin link.
 
 That's the only account she needs. Her saves show up as commits authored by her, so there is a full history and any change can be reverted from GitHub.
