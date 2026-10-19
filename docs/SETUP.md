@@ -4,8 +4,7 @@
 (transferred from thewebshed, whose recovery email is no longer accessible; thewebshed keeps push
 access as a collaborator so this PC's GitHub CLI still works). Netlify deploys from it, the GitHub
 OAuth app "CBE Website Admin" (owned by iCamv1) is installed on Netlify, form detection is on and
-submissions email admin@chrisbarronengineering.com.au. Only step 4 (invite the CBE admin) and
-step 6 (custom domain) remain. The rest of this file is kept for reference / rebuilding.
+submissions email admin@chrisbarronengineering.com.au. The repo was made **public** on 19 Oct 2026 because Netlify's free plan blocks builds on private repos from any Git contributor it does not recognise (it kept rejecting commits even after linking iCamv1); it holds only the public website files and catalogue, never secrets. Commits from this PC are authored as the iCamv1 email (`git config --local user.email`). Only step 6 (custom domain) remains. The rest of this file is kept for reference / rebuilding.
 
 ## 0. What you end up with
 
