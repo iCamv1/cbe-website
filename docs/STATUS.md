@@ -38,7 +38,8 @@ the project is in*.
    into the finder lightbox with `?p=<hash>`. Verified with curl (301 + correct Location).
 6. Speed pass (Lighthouse 13.5, phone, simulated 4G): Home 76 -> 87, Finder -> 82 (the 121-bar
    Volvo grid 77); accessibility / best practices / SEO all 100. Remaining ~3s FCP is the simulated
-   network floor. Report: `CBE Master\guides\Lighthouse BEFORE/AFTER speed pass - Home/Finder (phone).html`.
+   network floor. Reports: the four "Lighthouse BEFORE / AFTER speed pass - Home / Finder (phone).html"
+   files in `CBE Master\guides\`.
    Finder photos go through Netlify Image CDN (`cdnImg()`), heroes are WebP with 1280/768 variants.
 7. Footer: brands are one compact strip (`.footer-makes`) instead of a tall column.
 8. Admin rebrand: TheWebShed "Site Manager" shell (login + slim top bar) around the CBE catalogue.
