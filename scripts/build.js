@@ -18,7 +18,7 @@ const PUBLISH = [
   'index.html', 'bull-bars.html', 'about.html', 'contact.html', 'quality.html', '404.html',
   'style.css', 'main.js', 'data.js',
   'robots.txt', 'sitemap.xml', '_headers', '_redirects',
-  'favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest',
+  'favicon.png', 'favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest',
   'images', 'admin',
 ];
 
