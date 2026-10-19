@@ -287,7 +287,7 @@
           <div class="actions">
             <label class="btn btn-ghost btn-sm" for="photo-file">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
-              Choose photo
+              <span id="photo-btn-label">Choose photo</span>
             </label>
             <input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" class="sr-only">
             <label class="btn btn-ghost btn-sm" for="photo-camera" id="camera-lbl">
@@ -298,6 +298,7 @@
             <button class="btn btn-ghost btn-sm" type="button" id="photo-remove" hidden>Remove photo</button>
           </div>
         </div>
+        <p class="hint" id="photo-hint" hidden></p>
         <p class="err" id="photo-err" hidden></p>
       </div>
 
@@ -564,7 +565,7 @@
     $('e-desc').value = product ? (product.description || '') : '';
     $('e-order').value = product && product.order != null ? product.order : '';
     document.querySelector('details.adv').open = !!(product && product.order != null);
-    setPreview(product && product.image ? imgSrc(product) : '');
+    setPreview(product && product.image ? imgSrc(product) : '', product && product.image ? 'current' : '');
     $('save-btn').textContent = product ? 'Save changes' : 'Save bull bar';
     $('drawer').classList.add('open'); $('scrim').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -612,14 +613,18 @@
   });
 
   /* ─────────────────────────── photo ─────────────────────────── */
-  function setPreview(src) {
-    const img = $('preview-img');
+  function setPreview(src, mode) {
+    // mode: 'current' (photo already on the website), 'new' (chosen now, saved on Save), '' (none)
+    const img = $('preview-img'), hint = $('photo-hint'), btn = $('photo-btn-label');
     if (src) { img.src = src; img.hidden = false; $('preview-empty').hidden = true; $('photo-remove').hidden = false; }
     else { img.removeAttribute('src'); img.hidden = true; $('preview-empty').hidden = false; $('photo-remove').hidden = true; }
+    if (mode === 'current') { btn.textContent = 'Replace photo'; hint.textContent = 'This is the photo currently on the website. Choose a new one to replace it; the swap happens when you press Save.'; hint.hidden = false; }
+    else if (mode === 'new') { btn.textContent = 'Choose a different photo'; hint.textContent = state.editing && state.editing.image ? 'New photo selected. It replaces the old one when you press Save.' : 'New photo selected. It is uploaded when you press Save.'; hint.hidden = false; }
+    else { btn.textContent = 'Choose photo'; hint.textContent = state.editing && state.editing.image ? 'The current photo will be removed when you press Save.' : ''; hint.hidden = !hint.textContent; }
   }
   $('photo-file').addEventListener('change', e => handleFile(e.target.files[0]));
   $('photo-camera').addEventListener('change', e => handleFile(e.target.files[0]));
-  $('photo-remove').addEventListener('click', () => { state.upload = null; state.removePhoto = true; setPreview(''); });
+  $('photo-remove').addEventListener('click', () => { state.upload = null; state.removePhoto = true; setPreview('', ''); });
   const photoBox = $('photo');
   ['dragenter', 'dragover'].forEach(ev => photoBox.addEventListener(ev, e => { e.preventDefault(); photoBox.classList.add('drag'); }));
   ['dragleave', 'drop'].forEach(ev => photoBox.addEventListener(ev, e => { e.preventDefault(); photoBox.classList.remove('drag'); }));
@@ -632,7 +637,7 @@
       const out = await processImage(file);
       if (state.upload && state.upload.dataUrl) URL.revokeObjectURL(state.upload.dataUrl);
       state.upload = out; state.removePhoto = false;
-      setPreview(out.dataUrl);
+      setPreview(out.dataUrl, 'new');
     } catch (ex) {
       showErr('photo-err', 'That file could not be read as a photo. Please use a JPG or PNG.' + (/heic|heif/i.test(file.type + file.name) ? ' (iPhone HEIC photos: change the camera format to “Most compatible”, or share the photo as JPEG.)' : ''));
     } finally { $('photo-working').hidden = true; $('photo-file').value = ''; $('photo-camera').value = ''; }

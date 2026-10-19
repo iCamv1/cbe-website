@@ -21,6 +21,12 @@ automatically, usually within 2 minutes.
 7. Press **Save bull bar**. A message confirms it, and the badge at the top shows
    "Publishing… about 2 min" until the website has updated.
 
+## Replacing an old photo
+
+1. Open the bull bar (search for it, or filter by make and model).
+2. Press **Replace photo**, pick the new photo (or **Take photo** on a phone).
+3. Press **Save changes**. The new photo is on the website in about 2 minutes.
+
 ## Changing or removing one
 
 1. Find it: choose the make (and model) at the top, or type in the search box.
