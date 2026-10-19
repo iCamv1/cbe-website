@@ -15,7 +15,7 @@ Static marketing + product-catalogue website for Chris Barron Engineering (CBE),
 
 ## Content model (the CMS)
 
-The catalogue lives as one JSON file per entry under `/content`, edited by non-technical staff through **Sveltia CMS** at `/admin` (`admin/index.html` + `admin/config.yml`, GitHub backend, Netlify OAuth login):
+The catalogue lives as one JSON file per entry under `/content`, edited by non-technical staff through **Sveltia CMS** at `/admin` (`admin/index.html` + `admin/config.yml`, GitHub backend (repo iCamv1/cbe-website), Netlify OAuth login):
 
 ```
 content/makes/<make>.json            { label, order }

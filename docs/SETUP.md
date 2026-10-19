@@ -1,7 +1,11 @@
 # CBE website - developer setup (one-time)
 
-Everything in the repo is ready. These are the steps that can only be done in the
-GitHub / Netlify dashboards. Allow about 30 minutes.
+**Status 19 Oct 2026: steps 1-3 and 5 are DONE.** Repo lives at github.com/iCamv1/cbe-website
+(transferred from thewebshed, whose recovery email is no longer accessible; thewebshed keeps push
+access as a collaborator so this PC's GitHub CLI still works). Netlify deploys from it, the GitHub
+OAuth app "CBE Website Admin" (owned by iCamv1) is installed on Netlify, form detection is on and
+submissions email admin@chrisbarronengineering.com.au. Only step 4 (invite the CBE admin) and
+step 6 (custom domain) remain. The rest of this file is kept for reference / rebuilding.
 
 ## 0. What you end up with
 
@@ -30,7 +34,7 @@ If you use a different owner/name, change `backend.repo` in `admin/config.yml`.
 ## 2. Connect Netlify to the repo (continuous deployment)
 
 1. Netlify dashboard -> the **chris-barron-engineering** site -> **Site configuration -> Build & deploy -> Continuous deployment -> Link repository**.
-2. Choose GitHub -> authorise the Netlify GitHub app for the `thewebshed` account (grant it access to `cbe-website`).
+2. Choose GitHub -> authorise the Netlify GitHub app for the `iCamv1` account (grant it access to `cbe-website`).
 3. Build settings are read from `netlify.toml` automatically. Confirm they show:
    - Build command: `node scripts/build.js`
    - Publish directory: `dist`
@@ -42,7 +46,7 @@ From now on `deploy.bat` is only a fallback. The old hard-coded Netlify token wa
 ## 3. GitHub login for the admin (Netlify OAuth provider)
 
 1. GitHub -> **Settings -> Developer settings -> OAuth Apps -> New OAuth App**
-   (https://github.com/settings/developers). Create it under the `thewebshed` account (or an org).
+   (https://github.com/settings/developers). Created under the `iCamv1` account.
    - Application name: `CBE Website Admin`
    - Homepage URL: `https://chris-barron-engineering.netlify.app`
    - Authorization callback URL: **`https://api.netlify.com/auth/done`**
@@ -54,7 +58,7 @@ From now on `deploy.bat` is only a fallback. The old hard-coded Netlify token wa
 ## 4. Give the CBE admin access
 
 1. Have her create a free GitHub account (e.g. with `admin@chrisbarronengineering.com.au`). Two-factor via the GitHub mobile app or SMS is fine.
-2. GitHub -> `iCamv1/cbe-website` -> **Settings -> Collaborators -> Add people** -> her username -> role **Write**. She accepts the email invitation.
+2. GitHub (signed in as iCamv1) -> `iCamv1/cbe-website` -> **Settings -> Collaborators -> Add people** -> her username -> role **Write**. She accepts the email invitation.
 3. Send her `docs/ADMIN-GUIDE.md` (also published as a web page - see the hand-over message) and the admin link.
 
 That's the only account she needs. Her saves show up as commits authored by her, so there is a full history and any change can be reverted from GitHub.
