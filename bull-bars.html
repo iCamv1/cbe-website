@@ -913,6 +913,16 @@ function handleURLParams() {
       selModel.value = modelKey;
       selModel.dispatchEvent(new Event('change'));
     }
+    // ?p=<photo hash> (links from the old website): open that bull bar straight away
+    const photo = params.get('p');
+    if (photo && /^[0-9a-f]{32}$/i.test(photo)) {
+      const idx = currentList.findIndex(p => p.img && p.img.toLowerCase().includes('/' + photo.toLowerCase() + '.'));
+      if (idx >= 0) {
+        params.delete('p');
+        history.replaceState(null, '', window.location.pathname + '?' + params.toString());
+        setTimeout(() => openLightbox(currentList[idx], idx), 150);
+      }
+    }
   } finally {
     restoringFromURL = false;
   }
