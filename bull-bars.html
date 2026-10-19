@@ -243,6 +243,7 @@
       background: var(--surface2);
       overflow: hidden;
     }
+    .card-img-wrap::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 45%; background: linear-gradient(to top, rgba(13,15,20,.55), transparent); pointer-events: none; }
     .card-img-wrap img {
       width: 100%;
       height: 100%;
@@ -406,7 +407,8 @@
       .search-divider { display: none; }
       .finder-hero { min-height: auto; padding: 110px 16px 60px; }
       .finder-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-      .search-select { padding: 13px 32px 13px 12px; font-size: 0.85rem; background-position: right 10px center; }
+      .search-select { padding: 15px 36px 15px 14px; font-size: 1rem; background-position: right 12px center; min-height: 52px; }
+      .search-steps { flex-direction: column; gap: 14px; align-items: stretch; }
       .step-label { font-size: 0.7rem; }
       .lb-img-wrap { aspect-ratio: 4/3; }
       .lb-body { padding: 18px 18px 24px; }
@@ -450,9 +452,12 @@
       <div class="nav-item"><a class='nav-link' href='/quality'>Quality</a></div>
       <div class="nav-item"><a class='nav-link btn-header-cta' href='/contact'>Get a Quote</a></div>
     </nav>
+    <div class="header-mobile-actions">
+      <a class="header-find" href="#top" aria-label="Find a bull bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></a>
     <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+    </div>
   </div>
 </header>
 
@@ -478,7 +483,7 @@
 </div>
 
 <!-- FINDER HERO -->
-<section class="finder-hero">
+<section class="finder-hero" id="top">
   <div class="finder-hero-bg"></div>
   <div class="finder-hero-overlay"></div>
   <div class="finder-hero-content">
@@ -577,7 +582,7 @@
         </div>
         <p class="footer-body">Australia's premium truck bull bar specialists since 1978. FUPS-compliant, ADR 84/00 certified, and 100% Australian made from our Adelaide factory.</p>
         <div class="hours-banner">
-          <span class="hours-icon">🕐</span>
+          <span class="hours-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
           <div class="hours-text"><strong>Mon–Fri: 6:00am – 4:00pm</strong><br>3 Capelli Road, Wingfield SA 5013</div>
         </div>
       </div>
@@ -621,7 +626,7 @@
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Chris Barron Engineering Pty. Ltd. | Australian Made &amp; Family Owned</span>
       <div class="footer-bottom-right">
-        <span class="footer-aus">🇦🇺 Made in Adelaide, SA</span>
+        <span class="footer-aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Made in Adelaide, SA</span>
         <span class="footer-credit">Website by <a href="https://www.thewebshed.net" target="_blank" rel="noopener">TheWebShed</a></span>
       </div>
     </div>

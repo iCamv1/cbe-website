@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFinishes();
   initBackToTop();
   initContactForm();
+  initFinderCta();
 });
 
 /* ── HEADER ──────────────────────────────────────────────────── */
@@ -110,6 +111,17 @@ function initBackToTop() {
   window.addEventListener('scroll', () => {
     topBtn.style.setProperty('opacity', window.scrollY > 400 ? '1' : '0');
   }, { passive: true });
+}
+
+/* ── MOBILE FINDER BUTTON ─────────────────────────────────────── */
+function initFinderCta() {
+  const cta = document.getElementById('mobile-finder-cta');
+  const card = document.getElementById('find');
+  if (!cta || !card || !('IntersectionObserver' in window)) return;
+  // On the home page the finder is in the hero; hide the floating button while it's already on screen.
+  new IntersectionObserver(entries => {
+    entries.forEach(e => cta.classList.toggle('is-hidden', e.isIntersecting));
+  }, { threshold: 0.25 }).observe(card);
 }
 
 /* ── CONTACT FORM (Netlify Forms) ─────────────────────────────── */

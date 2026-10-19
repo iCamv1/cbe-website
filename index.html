@@ -127,7 +127,7 @@
     }
   </style>
 </head>
-<body>
+<body class="has-finder-cta">
 
 <!-- HEADER -->
 <header id="site-header" role="banner">
@@ -164,9 +164,12 @@
       <div class="nav-item"><a class='nav-link' href='/quality'>Quality</a></div>
       <div class="nav-item"><a class='nav-link btn-header-cta' href='/contact'>Get a Quote</a></div>
     </nav>
+    <div class="header-mobile-actions">
+      <a class="header-find" href="#find" aria-label="Find a bull bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></a>
     <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+    </div>
   </div>
 </header>
 
@@ -203,7 +206,7 @@
       <div>
         <div class="hero-badge">
           <span class="hero-badge-dot"></span>
-          🇦🇺 Adelaide-Made Since 1978
+          Adelaide-Made Since 1978
         </div>
         <h1 class="hero-h1">
           Built for the<br>
@@ -217,8 +220,8 @@
       </div>
 
       <!-- Right: Make/Model Search Card -->
-      <div class="hero-search-card">
-        <div class="hsc-title">🔍 Find Your Bull Bar</div>
+      <div class="hero-search-card" id="find">
+        <div class="hsc-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Find Your Bull Bar</div>
 
         <!-- Step 1: Make -->
         <div class="hsc-step">
@@ -355,32 +358,32 @@
     </div>
     <div class="why-grid">
       <div class="why-card reveal reveal-delay-1">
-        <div class="why-icon">🛡️</div>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
         <div class="why-title">ADR 84/00 FUPS Certified</div>
         <div class="why-body">Every FUPS-rated bar carries a Component Registration Number (CRN) from DOTARS. Tested to 8 tonnes corner load and 16 tonnes lateral — deflecting just 20–30mm vs the 400mm standard.</div>
       </div>
       <div class="why-card reveal reveal-delay-2">
-        <div class="why-icon">📡</div>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></div>
         <div class="why-title">Radar & AEB Compatible</div>
         <div class="why-body">Our engineering department has developed radar-aperture designs compatible with Active Brake Assist and Adaptive Cruise Control systems across all major brands.</div>
       </div>
       <div class="why-card reveal reveal-delay-3">
-        <div class="why-icon">🇦🇺</div>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <div class="why-title">100% Australian Made</div>
         <div class="why-body">Not imported. Every bull bar is designed, cut, welded and polished at our factory at 3 Capelli Road, Wingfield. Supporting local manufacturing since 1978.</div>
       </div>
       <div class="why-card reveal reveal-delay-1">
-        <div class="why-icon">⚙️</div>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
         <div class="why-title">Hi-Tensile Aluminium</div>
         <div class="why-body">6061-T6 high-tensile aluminium uprights (6mm plate), heavy-wall horizontal pipe — no butt welds, drilled and inserted construction for maximum integrity.</div>
       </div>
       <div class="why-card reveal reveal-delay-2">
-        <div class="why-icon">🎨</div>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".6" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".6" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".6" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".6" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div>
         <div class="why-title">Custom Finishes</div>
         <div class="why-body">Polished aluminium standard. Powder coat in any colour — including Arkote and Shingleback coatings. Polycarb headlight covers and mesh available on request.</div>
       </div>
       <div class="why-card reveal reveal-delay-3">
-        <div class="why-icon">🔩</div>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
         <div class="why-title">Tow Hitch Standard</div>
         <div class="why-body">Every bull bar comes with a tow hitch as standard fitment. Exact-fit chassis mounting for every make and model — no drilling, no guesswork.</div>
       </div>
@@ -462,6 +465,9 @@
   </div>
 </section>
 
+<!-- MOBILE: thumb-reachable finder button -->
+<a class="mobile-finder-cta" href="#find" id="mobile-finder-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Find your bull bar</span></a>
+
 <!-- FOOTER -->
 <footer class="site-footer" role="contentinfo">
   <div class="container">
@@ -473,7 +479,7 @@
         </div>
         <p class="footer-body">Australia's premium truck bull bar specialists since 1978. FUPS-compliant, ADR 84/00 certified, and 100% Australian made from our Adelaide factory.</p>
         <div class="hours-banner">
-          <span class="hours-icon">🕐</span>
+          <span class="hours-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
           <div class="hours-text"><strong>Mon–Fri: 6:00am – 4:00pm</strong><br>3 Capelli Road, Wingfield SA 5013</div>
         </div>
       </div>
@@ -517,7 +523,7 @@
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Chris Barron Engineering Pty. Ltd. | Australian Made &amp; Family Owned</span>
       <div class="footer-bottom-right">
-        <span class="footer-aus">🇦🇺 Made in Adelaide, SA</span>
+        <span class="footer-aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Made in Adelaide, SA</span>
         <span class="footer-credit">Website by <a href="https://www.thewebshed.net" target="_blank" rel="noopener">TheWebShed</a></span>
       </div>
     </div>
@@ -526,8 +532,8 @@
 
 <!-- FLOAT BUTTONS -->
 <div class="float-btns">
-  <a href="https://wa.me/61418827109" class="float-btn float-wa" aria-label="WhatsApp" title="Chat on WhatsApp" target="_blank" rel="noopener">💬</a>
-  <button class="float-btn float-top" id="back-to-top" aria-label="Back to top" style="opacity:0">↑</button>
+  <a href="https://wa.me/61418827109" class="float-btn float-wa" aria-label="WhatsApp" title="Chat on WhatsApp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></a>
+  <button class="float-btn float-top" id="back-to-top" aria-label="Back to top" style="opacity:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></button>
 </div>
 
 <script src="data.js"></script>

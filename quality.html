@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800;900&family=Fira+Mono:wght@400;500&display=swap">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="has-finder-cta">
 <!-- HEADER -->
 <header id="site-header" role="banner">
   <div class="header-inner">
@@ -49,9 +49,12 @@
       <div class="nav-item"><a class='nav-link active' href='/quality'>Quality</a></div>
       <div class="nav-item"><a class='nav-link btn-header-cta' href='/contact'>Get a Quote</a></div>
     </nav>
+    <div class="header-mobile-actions">
+      <a class="header-find" href="/bull-bars" aria-label="Find a bull bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></a>
     <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+    </div>
   </div>
 </header>
 
@@ -96,22 +99,22 @@
             </div>
             <div class="cert-grid">
                 <div class="cert-card">
-                    <div class="cert-icon">🏛️</div>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
                     <h3>ADR 84/00</h3>
                     <p>Front Underrun Protection Standard</p>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-icon">📋</div>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div>
                     <h3>CRN</h3>
                     <p>Component Registration Number — DOTARS Certified</p>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-icon">⚖️</div>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
                     <h3>8T</h3>
                     <p>Corner Load Test — 20–30mm flex only</p>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-icon">💪</div>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/></svg></div>
                     <h3>16T</h3>
                     <p>Lateral Load Test — chassis-rail aligned</p>
                 </div>
@@ -217,6 +220,9 @@
         </div>
     </section>
 
+<!-- MOBILE: thumb-reachable finder button -->
+<a class="mobile-finder-cta" href="/bull-bars" id="mobile-finder-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Find your bull bar</span></a>
+
 <!-- FOOTER -->
 <footer class="site-footer" role="contentinfo">
   <div class="container">
@@ -228,7 +234,7 @@
         </div>
         <p class="footer-body">Australia's premium truck bull bar specialists since 1978. FUPS-compliant, ADR 84/00 certified, and 100% Australian made from our Adelaide factory.</p>
         <div class="hours-banner">
-          <span class="hours-icon">🕐</span>
+          <span class="hours-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
           <div class="hours-text"><strong>Mon–Fri: 6:00am – 4:00pm</strong><br>3 Capelli Road, Wingfield SA 5013</div>
         </div>
       </div>
@@ -272,7 +278,7 @@
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Chris Barron Engineering Pty. Ltd. | Australian Made &amp; Family Owned</span>
       <div class="footer-bottom-right">
-        <span class="footer-aus">🇦🇺 Made in Adelaide, SA</span>
+        <span class="footer-aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Made in Adelaide, SA</span>
         <span class="footer-credit">Website by <a href="https://www.thewebshed.net" target="_blank" rel="noopener">TheWebShed</a></span>
       </div>
     </div>
