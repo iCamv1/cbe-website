@@ -93,7 +93,14 @@ Free tier: 100 submissions/month, which is plenty for a quote form.
 
 Two domains are involved. **Primary: www.custombullbars.com.au** (the old Joomla site on SiteGround, which Google has indexed for years; canonicals, sitemap and robots point here). **Alias: chrisbarronengineering.com.au** (today an 81-byte meta-refresh forwarder on a cPanel host at hostyourservices.net; its MX record points at that same host, so CBE's admin@ email lives there and that hosting must not be cancelled).
 
-Netlify -> Domain management -> Add a domain: add `custombullbars.com.au` (set `www.custombullbars.com.au` as primary) and `chrisbarronengineering.com.au`; Netlify redirects every alias to the primary automatically. Then, at each domain's DNS host (SiteGround for custombullbars, cPanel/hostyourservices for chrisbarronengineering): `www` CNAME -> `chris-barron-engineering.netlify.app`, apex A -> `75.2.60.5`. Change nothing else (MX, mail, SPF/DKIM). HTTPS is automatic. The full brief for the IT contact is the "CBE Domain Handover" page.
+Netlify side (done 24 Oct 2026): `custombullbars.com.au`, `www.custombullbars.com.au`, `chrisbarronengineering.com.au` and `www.chrisbarronengineering.com.au` are all on the site; Netlify redirects every alias to the primary automatically. Netlify DNS was **not** set up and must not be (moving the nameservers would drop the mail records). The primary is still the bare `custombullbars.com.au`: switching it to `www.custombullbars.com.au` is blocked by a certificate-provisioning lock until DNS points at Netlify, so do it right after the cutover (Domain management -> www row -> Options -> Set as primary domain).
+
+**Mail trap (found 24 Oct 2026):** on both domains the MX record is the bare domain itself, and `mail.chrisbarronengineering.com.au` is a CNAME to the bare domain. Repointing the apex A record alone would send CBE's email to Netlify. So the order at each DNS host is:
+
+1. Mail first: MX -> `mail.<domain>`; on chrisbarronengineering make `mail` an A record to `110.232.143.37` (and any other CNAME to the apex an A record to that IP), add `ip4:110.232.143.37` to its SPF, and set cPanel Email Routing to Local Mail Exchanger. custombullbars' `mail.` is already an A record to 35.213.223.175 and its SPF already lists that IP. Wait out the TTL and test mail to admin@.
+2. Then the website: `www` CNAME -> `chris-barron-engineering.netlify.app`, apex A -> `75.2.60.5`.
+
+HTTPS is automatic once DNS points at Netlify. The full brief for the IT contact is the "CBE Domain Handover" page (revised 24 Oct 2026).
 
 ## Day-to-day for you
 

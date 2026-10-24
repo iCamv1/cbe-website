@@ -1,6 +1,6 @@
 # Project status - where things are up to
 
-Last updated: 20 October 2026 (commit 74aad0e). Keep this file current: update it whenever a
+Last updated: 24 October 2026 (audit, Netlify domains, revised domain handover). Keep this file current: update it whenever a
 piece of work ships or a decision is made, so a new session (or a new developer) can pick up
 without the chat history. CLAUDE.md explains *how the code works*; this file says *what state
 the project is in*.
@@ -18,8 +18,9 @@ the project is in*.
 - **Repo**: https://github.com/iCamv1/cbe-website (public, branch `main`). Every push deploys.
 - **Catalogue admin**: https://chris-barron-engineering.netlify.app/admin (passcode, branded as
   TheWebShed "Site Manager"); developer editor at /admin/advanced (Sveltia, GitHub login).
-- **Master folder on this PC**: `C:\Users\User\Desktop\CBE Master\` - `README - PROJECT NOTES.md`
-  (numbered change log, items 1-17), `guides\` (admin guide, domain handover, audit, Lighthouse
+- **Master folder on this PC**: `C:\Users\User\Desktop\The WebShed\CBE Master\` (since 20 Oct 2026;
+  the old `Desktop\CBE Master\` copy is a stale archive) - `README - PROJECT NOTES.md`
+  (numbered change log, items 1-19), `guides\` (admin guide, domain handover, audit, Lighthouse
   before/after, setup, notes for Heather), `website-source (snapshot 2026-10-19)\` (a clone of the
   repo; `git pull` it after each push), `original-images-backup\`.
 
@@ -50,16 +51,33 @@ the project is in*.
 
 Needs the user / client, roughly in priority order:
 
-- **Quote form**: do a live test submission on /contact and confirm the Netlify Forms email
-  arrives at admin@chrisbarronengineering.com.au; add spam protection (honeypot is in place,
+- **Quote form**: the Netlify side was checked 24 Oct 2026 (form `quote-request` detected, email
+  notification for any form -> admin@chrisbarronengineering.com.au, no submissions yet). Still to do: a
+  live test submission on /contact confirming the email arrives; add spam protection (honeypot is in place,
   consider Netlify reCAPTCHA if junk arrives).
 - **Admin dry run**: James does a live add -> edit -> delete in /admin, then gives Heather the
   passcode *by phone* (never written down in the repo or chat).
-- **Domain cutover**: add www.custombullbars.com.au as Netlify primary domain and
-  chrisbarronengineering.com.au as alias (user types domains in Netlify UI; a certificate lock was
-  blocking the alias last time). Then the IT contact changes only the www/apex records (never MX/TXT -
-  email lives on those hosts). Handover brief: `docs/SETUP.md` step 6 and the guide in CBE Master.
-  Verify HTTPS and the old-URL redirects on the real domain afterwards.
+- **Domain cutover** (updated 24 Oct 2026):
+  - Netlify side is done: all four hostnames (both domains, bare and www) are on the site, all
+    "Pending DNS verification". Netlify DNS deliberately not set up.
+  - **Mail trap**: on both domains the MX record is the bare domain itself (and
+    `mail.chrisbarronengineering.com.au` is a CNAME to it), so moving the apex A record alone would
+    break CBE's email. The handover was revised 24 Oct 2026: the IT contact first points MX at
+    `mail.<domain>` (an A record to the old server), tests mail, and only then moves www/apex. The
+    19 Oct version, which said to leave MX alone, went to Heather to forward; a correction email is
+    drafted in Gmail for James to send (thread "For the IT guy - please forward").
+  - After DNS moves: set `www.custombullbars.com.au` as primary in Netlify (blocked until then by a
+    certificate-provisioning lock), confirm HTTPS on all four, re-check MX still resolves to the old
+    servers, curl the old-URL redirects on the real domain.
+  - Details: `docs/SETUP.md` section 6 and `CBE Domain Handover` in `CBE Master\guides\`.
+- **Contact page accessibility/speed** (audit 24 Oct 2026, Lighthouse phone): Contact scores
+  perf 64 / a11y 91. Fix: contact-card `<strong>` labels #5a6070 on #161a23 (contrast 2.77), Google
+  Maps iframe has no `title`, an `h3` skips a heading level; hero is a CSS background without
+  priority and the Maps embed is ~600 KB (a click-to-load static map would fix most of it).
+  Home 99/100/100/100, Finder (Volvo FH) 88/100/100/100.
+- **Smaller audit notes (24 Oct 2026)**: `/api/login` has only a 600 ms delay, no lockout, so the
+  passcode must be long; `.reveal` content and the stat counters are invisible / "0+" with JS off;
+  no Content-Security-Policy header.
 - **Old hosting**: confirm no mailboxes live on SiteGround before cancelling it.
 - **Search Console**: verify the real domain, submit `sitemap.xml`.
 - **Social**: update the website link on CBE's Facebook/Instagram; add social links to the footer
