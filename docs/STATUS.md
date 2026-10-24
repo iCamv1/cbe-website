@@ -64,8 +64,10 @@ Needs the user / client, roughly in priority order:
     `mail.chrisbarronengineering.com.au` is a CNAME to it), so moving the apex A record alone would
     break CBE's email. The handover was revised 24 Oct 2026: the IT contact first points MX at
     `mail.<domain>` (an A record to the old server), tests mail, and only then moves www/apex. The
-    19 Oct version, which said to leave MX alone, went to Heather to forward; a correction email is
-    drafted in Gmail for James to send (thread "For the IT guy - please forward").
+    19 Oct version, which said to leave MX alone, went to Heather to forward. On 24 Oct James
+    emailed Heather ("Quick one about the website domains") to ignore it and send the contact of
+    whoever looks after the domains/hosting; James will ask them for manager access (SiteGround
+    collaborator etc.) and do the cutover himself, using the revised handover as the checklist.
   - After DNS moves: set `www.custombullbars.com.au` as primary in Netlify (blocked until then by a
     certificate-provisioning lock), confirm HTTPS on all four, re-check MX still resolves to the old
     servers, curl the old-URL redirects on the real domain.
