@@ -68,6 +68,12 @@ Needs the user / client, roughly in priority order:
     emailed Heather ("Quick one about the website domains") to ignore it and send the contact of
     whoever looks after the domains/hosting; James will ask them for manager access (SiteGround
     collaborator etc.) and do the cutover himself, using the revised handover as the checklist.
+  - **28 Oct 2026: James emailed the IT contact directly**: Greg, gregw@probiz.com.au (Probiz), Gmail
+    thread 1a181c9095adf01a. Introduced himself as TheWebShed (and a welder at CBE), said the site is built
+    for Rob, and asked for SiteGround collaborator access (custombullbars), DNS access on the cPanel host
+    (chrisbarronengineering), and registrar/registrant details; offered to email the checklist if Greg
+    prefers to make the changes himself. Email only: James does not want phone calls, and Heather is not
+    to be mentioned to Greg. Waiting on Greg's reply.
   - After DNS moves: set `www.custombullbars.com.au` as primary in Netlify (blocked until then by a
     certificate-provisioning lock), confirm HTTPS on all four, re-check MX still resolves to the old
     servers, curl the old-URL redirects on the real domain.
