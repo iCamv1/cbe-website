@@ -645,17 +645,10 @@
 (function(){
   var box=document.querySelector('.hero-reels');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,save=!!(navigator.connection&&navigator.connection.saveData);
-  var SPEED=0.5,FADE=1400,slots=[],lastErr='',stage='waiting for load',taps=0,visible=true,z=1,t0=0;
-  // Mockup only: add ?debug to the URL to see what the reels are doing on a phone
-  if(/debug/.test(location.search)){
-    var out=document.createElement('pre');
-    out.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:9999;margin:0;padding:8px;background:rgba(0,0,0,.85);color:#7fffd4;font:11px/1.4 monospace;white-space:pre-wrap;pointer-events:none';
-    document.body.appendChild(out);
-    setInterval(function(){out.textContent='reduce-motion '+reduce+' | data-saver '+save+' | '+stage+' | taps '+taps+(lastErr?'\nlast play error: '+lastErr:'')+'\n'+slots.map(function(s,k){return 'panel '+(k+1)+': '+s.vids.map(function(v,j){return v.src.split('/').pop().replace('.mp4','')+(j===s.i?'*':'')+' r'+v.readyState+(v.paused?' paused':' '+v.currentTime.toFixed(1)+'s')+(v.classList.contains('is-on')?' on':'')+(v.error?' ERR'+v.error.code:'');}).join(' | ');}).join('\n');},500);
-  }
-  if(!box||reduce||save){stage='skipped (reduced motion or data saver)';return;}
+  var SPEED=0.5,FADE=1400,slots=[],visible=true,z=1,t0=0;
+  if(!box||reduce||save)return;
 
-  function play(v){v.defaultPlaybackRate=SPEED;v.playbackRate=SPEED;var p=v.play();if(p&&p.catch)p.catch(function(e){lastErr=e.name;});return p;}
+  function play(v){v.defaultPlaybackRate=SPEED;v.playbackRate=SPEED;var p=v.play();if(p&&p.catch)p.catch(function(){});return p;}
   function current(){return slots.map(function(s){return s.vids[s.i];});}
 
   function show(s,v){
@@ -693,7 +686,6 @@
     return s;
   }
   function start(){
-    stage='started';
     var panels=matchMedia('(min-width: 900px)').matches;
     box.classList.add(panels?'is-panels':'is-carousel');
     var lists=panels?[['western-star','jacka-bros'],['mack','capral'],['kenworth','verdons']]
@@ -704,10 +696,10 @@
     new IntersectionObserver(function(e){visible=e[0].isIntersecting;current().forEach(function(v){visible?play(v):v.pause();});}).observe(box);
     // iOS Low Power Mode blocks autoplay; keep retrying on taps until every clip is playing
     function kick(){
-      taps++;if(!visible)return;
+      if(!visible)return;
       current().forEach(function(v){
         if(!v.paused)return;var p=play(v);
-        if(p&&p.then)p.then(function(){if(current().every(function(x){return !x.paused;})){removeEventListener('touchend',kick);removeEventListener('click',kick);}},function(e){lastErr='after tap: '+e.name;});
+        if(p&&p.then)p.then(function(){if(current().every(function(x){return !x.paused;})){removeEventListener('touchend',kick);removeEventListener('click',kick);}},function(){});
       });
     }
     addEventListener('touchend',kick,{passive:true});addEventListener('click',kick);
