@@ -635,7 +635,7 @@
 })();
 </script>
 <script>
-// Hero reels: CBE's own Facebook reels behind the hero, played at 75% speed. Wide screens show three
+// Hero reels: CBE's own Facebook reels behind the hero, played at half speed. Wide screens show three
 // side-by-side panels, each cycling two clips; phones cycle all six in one frame. They load only after
 // the page has loaded and gone idle, so the finder is usable exactly as fast as before. Every fade
 // waits for the incoming clip to be actually playing: the first one fades in over the photo, and each
@@ -645,7 +645,7 @@
 (function(){
   var box=document.querySelector('.hero-reels');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,save=!!(navigator.connection&&navigator.connection.saveData);
-  var SPEED=0.75,FADE=1400,slots=[],lastErr='',stage='waiting for load',taps=0,visible=true,z=1,t0=0;
+  var SPEED=0.5,FADE=1400,slots=[],lastErr='',stage='waiting for load',taps=0,visible=true,z=1,t0=0;
   // Mockup only: add ?debug to the URL to see what the reels are doing on a phone
   if(/debug/.test(location.search)){
     var out=document.createElement('pre');
