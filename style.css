@@ -689,10 +689,15 @@ h1,h2,h3,.hero-h1,.section-title,.page-hero-title,.stat-number,.why-title,.logo-
 .hero-v2,.finder-hero{position:relative}
 .hero-sheen{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.6s ease;mix-blend-mode:screen}
 .hero-sheen.is-on{opacity:1}
-/* Hero reels (index.html): muted clips crossfade over the photo, under the gradient */
+/* Hero reels (index.html): muted clips over the photo, under the gradient. Phones crossfade one
+   clip; wide screens show the three vertical reels side by side as panels */
 .hero-reels{position:absolute;inset:0;z-index:0;pointer-events:none}
 .hero-reels video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 58%;opacity:0;transition:opacity 1.4s ease;filter:brightness(.5) saturate(.85)}
 .hero-reels video.is-on{opacity:1}
+.hero-reels.is-panels{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.hero-reels.is-panels video{position:static;object-position:center;filter:brightness(.55) saturate(.85)}
+.hero-reels.is-panels video:nth-child(2){transition-delay:.25s}
+.hero-reels.is-panels video:nth-child(3){transition-delay:.5s}
 .hero-v2 .hero-gradient,.hero-v2 .hero-grid-overlay{z-index:1}
 /* Cursor spotlight: a soft glow that follows the mouse, border brightens where the cursor is */
 .has-spotlight .why-card,.has-spotlight .product-card,.has-spotlight .cert-card,.has-spotlight .quick-contact-card,.has-spotlight .cta-card,.has-spotlight .quality-item,.has-spotlight .finish-card,.has-spotlight .fb-card{position:relative;overflow:hidden}
