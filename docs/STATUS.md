@@ -109,3 +109,12 @@ Superseded: inviting Heather's GitHub account as a collaborator is no longer nee
   are typed by James, never by Claude and never in the repo.
 - After any change: `node scripts/build.js`, commit, push, confirm live with curl, then add a
   numbered item to `CBE Master\README - PROJECT NOTES.md` and `git pull` the snapshot folder.
+
+## 2 Nov 2026: hero video reels LIVE
+
+- Rob (owner) wants the home-page finder kept as it is; he likes instant access to it on load. The finder card is untouched.
+- Six of CBE's own Facebook reels (Western Star, Mack Super-Liner, Craig Arthur Kenworth, Jacka Bros, Verdon's, Capral line-up) play muted at half speed behind the hero: three side-by-side panels on screens 900px+ (two clips each), one frame cycling all six on phones. Files: images/reels/*.mp4 (540px H.264, ~12 MB total, re-encoded with ffmpeg; originals downloaded with yt-dlp).
+- They load only after page load + idle; each clip fades in only once playing, and the next starts before the current ends and fades in on top (tested headless: no dips, all fades seen, desktop 70 s and phone 190 s runs).
+- Off for prefers-reduced-motion and data saver. iOS Low Power Mode blocks autoplay: the photo stays and every tap retries.
+- Went live 2 Nov 2026 on James's go-ahead (push to main). Branch hero-video-mockup holds the history. CBE's permission to use the reels on the site was not separately confirmed (their own Page content); James decided.
+- To change a clip: encode with ffmpeg -an -vf scale=540:-2,fps=30 -c:v libx264 -profile:v main -crf 27 -movflags +faststart, drop it in images/reels/, and edit the lists in the reels script at the bottom of index.html.
