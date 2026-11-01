@@ -643,13 +643,13 @@
 (function(){
   var box=document.querySelector('.hero-reels');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,save=!!(navigator.connection&&navigator.connection.saveData);
-  var vids=[],lastErr='',stage='waiting for load';
+  var vids=[],lastErr='',stage='waiting for load',taps=0;
   // Mockup only: add ?debug to the URL to see what the reels are doing on a phone
   if(/debug/.test(location.search)){
     var out=document.createElement('pre');
     out.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:9999;margin:0;padding:8px;background:rgba(0,0,0,.85);color:#7fffd4;font:11px/1.4 monospace;white-space:pre-wrap;pointer-events:none';
     document.body.appendChild(out);
-    setInterval(function(){out.textContent='reduce-motion '+reduce+' | data-saver '+save+' | '+stage+(lastErr?'\nlast play error: '+lastErr:'')+'\n'+vids.map(function(v){return v.src.split('/').pop()+' ready '+v.readyState+' paused '+v.paused+' shown '+v.classList.contains('is-on')+(v.error?' ERR '+v.error.code:'');}).join('\n');},500);
+    setInterval(function(){out.textContent='reduce-motion '+reduce+' | data-saver '+save+' | '+stage+' | taps '+taps+(lastErr?'\nlast play error: '+lastErr:'')+'\n'+vids.map(function(v){return v.src.split('/').pop()+' ready '+v.readyState+' paused '+v.paused+' shown '+v.classList.contains('is-on')+(v.error?' ERR '+v.error.code:'');}).join('\n');},500);
   }
   if(!box||reduce||save){stage='skipped (reduced motion or data saver)';return;}
   var reels=['western-star','mack','kenworth'];
@@ -677,7 +677,10 @@
     else{vids.forEach(function(v){v.addEventListener('ended',function(){if(v===vids[i])next();});});play(vids[i]);}
     new IntersectionObserver(function(e){visible=e[0].isIntersecting;current().forEach(function(v){visible?play(v):v.pause();});}).observe(box);
     // iOS Low Power Mode blocks autoplay; a touch anywhere (usually on the finder) counts as consent
-    function kick(){removeEventListener('touchend',kick);removeEventListener('click',kick);if(visible)current().forEach(function(v){if(v.paused)play(v);});}
+    function kick(){
+      taps++;if(!visible)return;
+      current().forEach(function(v){if(!v.paused)return;var p=v.play();if(p&&p.then)p.then(function(){if(current().every(function(x){return !x.paused;})){removeEventListener('touchend',kick);removeEventListener('click',kick);}},function(e){lastErr='after tap: '+e.name;});});
+    }
     addEventListener('touchend',kick,{passive:true});addEventListener('click',kick);
   }
   function idle(){('requestIdleCallback' in window)?requestIdleCallback(start,{timeout:2500}):setTimeout(start,800);}
