@@ -635,51 +635,80 @@
 })();
 </script>
 <script>
-// Hero reels: CBE's own Facebook reels behind the hero. Wide screens show all three side by side
-// as panels; phones crossfade one at a time. They load only after the page has loaded and gone
-// idle, so the finder is usable exactly as fast as before, and each clip fades in only once it is
-// actually playing, so the photo stays whenever playback is blocked (iOS Low Power Mode). Skipped
-// for reduced motion and data saver; paused when the hero is off screen.
+// Hero reels: CBE's own Facebook reels behind the hero, played at 75% speed. Wide screens show three
+// side-by-side panels, each cycling two clips; phones cycle all six in one frame. They load only after
+// the page has loaded and gone idle, so the finder is usable exactly as fast as before. Every fade
+// waits for the incoming clip to be actually playing: the first one fades in over the photo, and each
+// next one starts before the current clip ends and fades in on top of it, so the picture never dips
+// back to the photo. If iOS blocks playback (Low Power Mode) the photo simply stays, and a tap retries.
+// Skipped for reduced motion and data saver; paused when the hero is off screen.
 (function(){
   var box=document.querySelector('.hero-reels');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,save=!!(navigator.connection&&navigator.connection.saveData);
-  var vids=[],lastErr='',stage='waiting for load',taps=0;
+  var SPEED=0.75,FADE=1400,slots=[],lastErr='',stage='waiting for load',taps=0,visible=true,z=1,t0=0;
   // Mockup only: add ?debug to the URL to see what the reels are doing on a phone
   if(/debug/.test(location.search)){
     var out=document.createElement('pre');
     out.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:9999;margin:0;padding:8px;background:rgba(0,0,0,.85);color:#7fffd4;font:11px/1.4 monospace;white-space:pre-wrap;pointer-events:none';
     document.body.appendChild(out);
-    setInterval(function(){out.textContent='reduce-motion '+reduce+' | data-saver '+save+' | '+stage+' | taps '+taps+(lastErr?'\nlast play error: '+lastErr:'')+'\n'+vids.map(function(v){return v.src.split('/').pop()+' ready '+v.readyState+' paused '+v.paused+' shown '+v.classList.contains('is-on')+(v.error?' ERR '+v.error.code:'');}).join('\n');},500);
+    setInterval(function(){out.textContent='reduce-motion '+reduce+' | data-saver '+save+' | '+stage+' | taps '+taps+(lastErr?'\nlast play error: '+lastErr:'')+'\n'+slots.map(function(s,k){return 'panel '+(k+1)+': '+s.vids.map(function(v,j){return v.src.split('/').pop().replace('.mp4','')+(j===s.i?'*':'')+' r'+v.readyState+(v.paused?' paused':' '+v.currentTime.toFixed(1)+'s')+(v.classList.contains('is-on')?' on':'')+(v.error?' ERR'+v.error.code:'');}).join(' | ');}).join('\n');},500);
   }
   if(!box||reduce||save){stage='skipped (reduced motion or data saver)';return;}
-  var reels=['western-star','mack','kenworth'];
+
+  function play(v){v.defaultPlaybackRate=SPEED;v.playbackRate=SPEED;var p=v.play();if(p&&p.catch)p.catch(function(e){lastErr=e.name;});return p;}
+  function current(){return slots.map(function(s){return s.vids[s.i];});}
+
+  function show(s,v){
+    // The first reveal of each panel is staggered so they arrive one after another
+    if(!s.shown){s.shown=true;if(!t0)t0=Date.now();var wait=s.k*450-(Date.now()-t0);if(wait>0){setTimeout(function(){show(s,v);},wait);s.shown=true;return;}}
+    v.style.zIndex=++z;v.classList.add('is-on');
+    var n=s.vids[(s.i+1)%s.vids.length];if(n.preload!=='auto'){n.preload='auto';n.load();}
+    clearTimeout(s.t);
+    s.t=setTimeout(function(){
+      s.vids.forEach(function(o){if(o!==v){o.classList.remove('is-on');o.pause();}});
+      s.handing=false;
+    },FADE+100);
+  }
+  function handover(s){
+    s.handing=true;s.i=(s.i+1)%s.vids.length;
+    var v=s.vids[s.i];v.currentTime=0;play(v);
+  }
+  function makeSlot(names){
+    var el=document.createElement('div');el.className='reel-slot';box.appendChild(el);
+    var s={i:0,k:slots.length,handing:false,vids:[]};
+    s.vids=names.map(function(name,k){
+      var v=document.createElement('video');
+      v.muted=true;v.playsInline=true;v.preload=k<2?'auto':'none';
+      v.setAttribute('muted','');v.setAttribute('playsinline','');
+      v.src='images/reels/'+name+'.mp4';
+      v.addEventListener('playing',function(){v.playbackRate=SPEED;if(v===s.vids[s.i])show(s,v);});
+      // Start the next clip while this one still has a fade's worth of footage left
+      v.addEventListener('timeupdate',function(){
+        if(v!==s.vids[s.i]||s.handing||!v.duration)return;
+        if(v.duration-v.currentTime<=(FADE/1000+.35)*SPEED)handover(s);
+      });
+      v.addEventListener('ended',function(){if(v===s.vids[s.i]&&!s.handing)handover(s);});
+      el.appendChild(v);return v;
+    });
+    return s;
+  }
   function start(){
     stage='started';
     var panels=matchMedia('(min-width: 900px)').matches;
     box.classList.add(panels?'is-panels':'is-carousel');
-    vids=reels.map(function(name){
-      var v=document.createElement('video');
-      v.muted=true;v.playsInline=true;v.loop=panels;v.preload='auto';
-      v.setAttribute('muted','');v.setAttribute('playsinline','');
-      v.src='images/reels/'+name+'.mp4';
-      v.addEventListener('playing',function(){if(panels||v===vids[i])v.classList.add('is-on');});
-      box.appendChild(v);return v;
-    });
-    var i=panels?-1:1,visible=true;
-    function play(v){var p=v.play();if(p&&p.catch)p.catch(function(e){lastErr=e.name+': '+e.message;});}
-    function next(){
-      var prev=vids[i];i=(i+1)%vids.length;var v=vids[i];
-      v.currentTime=0;play(v);
-      if(prev)setTimeout(function(){prev.classList.remove('is-on');prev.pause();},1400);
-    }
-    function current(){return panels?vids:[vids[i]];}
-    if(panels)vids.forEach(play);
-    else{vids.forEach(function(v){v.addEventListener('ended',function(){if(v===vids[i])next();});});play(vids[i]);}
+    var lists=panels?[['western-star','jacka-bros'],['mack','capral'],['kenworth','verdons']]
+                    :[['mack','jacka-bros','western-star','capral','verdons','kenworth']];
+    lists.forEach(function(l){slots.push(makeSlot(l));});
+    // Every panel starts loading at once; show() staggers when each one appears
+    slots.forEach(function(s){play(s.vids[0]);});
     new IntersectionObserver(function(e){visible=e[0].isIntersecting;current().forEach(function(v){visible?play(v):v.pause();});}).observe(box);
-    // iOS Low Power Mode blocks autoplay; a touch anywhere (usually on the finder) counts as consent
+    // iOS Low Power Mode blocks autoplay; keep retrying on taps until every clip is playing
     function kick(){
       taps++;if(!visible)return;
-      current().forEach(function(v){if(!v.paused)return;var p=v.play();if(p&&p.then)p.then(function(){if(current().every(function(x){return !x.paused;})){removeEventListener('touchend',kick);removeEventListener('click',kick);}},function(e){lastErr='after tap: '+e.name;});});
+      current().forEach(function(v){
+        if(!v.paused)return;var p=play(v);
+        if(p&&p.then)p.then(function(){if(current().every(function(x){return !x.paused;})){removeEventListener('touchend',kick);removeEventListener('click',kick);}},function(e){lastErr='after tap: '+e.name;});
+      });
     }
     addEventListener('touchend',kick,{passive:true});addEventListener('click',kick);
   }
