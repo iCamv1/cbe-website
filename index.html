@@ -642,12 +642,22 @@
 // for reduced motion and data saver; paused when the hero is off screen.
 (function(){
   var box=document.querySelector('.hero-reels');
-  if(!box||matchMedia('(prefers-reduced-motion: reduce)').matches||(navigator.connection&&navigator.connection.saveData))return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,save=!!(navigator.connection&&navigator.connection.saveData);
+  var vids=[],lastErr='',stage='waiting for load';
+  // Mockup only: add ?debug to the URL to see what the reels are doing on a phone
+  if(/debug/.test(location.search)){
+    var out=document.createElement('pre');
+    out.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:9999;margin:0;padding:8px;background:rgba(0,0,0,.85);color:#7fffd4;font:11px/1.4 monospace;white-space:pre-wrap;pointer-events:none';
+    document.body.appendChild(out);
+    setInterval(function(){out.textContent='reduce-motion '+reduce+' | data-saver '+save+' | '+stage+(lastErr?'\nlast play error: '+lastErr:'')+'\n'+vids.map(function(v){return v.src.split('/').pop()+' ready '+v.readyState+' paused '+v.paused+' shown '+v.classList.contains('is-on')+(v.error?' ERR '+v.error.code:'');}).join('\n');},500);
+  }
+  if(!box||reduce||save){stage='skipped (reduced motion or data saver)';return;}
   var reels=['western-star','mack','kenworth'];
   function start(){
+    stage='started';
     var panels=matchMedia('(min-width: 900px)').matches;
     box.classList.add(panels?'is-panels':'is-carousel');
-    var vids=reels.map(function(name){
+    vids=reels.map(function(name){
       var v=document.createElement('video');
       v.muted=true;v.playsInline=true;v.loop=panels;v.preload='auto';
       v.setAttribute('muted','');v.setAttribute('playsinline','');
@@ -656,7 +666,7 @@
       box.appendChild(v);return v;
     });
     var i=panels?-1:1,visible=true;
-    function play(v){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+    function play(v){var p=v.play();if(p&&p.catch)p.catch(function(e){lastErr=e.name+': '+e.message;});}
     function next(){
       var prev=vids[i];i=(i+1)%vids.length;var v=vids[i];
       v.currentTime=0;play(v);
@@ -666,6 +676,9 @@
     if(panels)vids.forEach(play);
     else{vids.forEach(function(v){v.addEventListener('ended',function(){if(v===vids[i])next();});});play(vids[i]);}
     new IntersectionObserver(function(e){visible=e[0].isIntersecting;current().forEach(function(v){visible?play(v):v.pause();});}).observe(box);
+    // iOS Low Power Mode blocks autoplay; a touch anywhere (usually on the finder) counts as consent
+    function kick(){removeEventListener('touchend',kick);removeEventListener('click',kick);if(visible)current().forEach(function(v){if(v.paused)play(v);});}
+    addEventListener('touchend',kick,{passive:true});addEventListener('click',kick);
   }
   function idle(){('requestIdleCallback' in window)?requestIdleCallback(start,{timeout:2500}):setTimeout(start,800);}
   document.readyState==='complete'?idle():addEventListener('load',idle);
