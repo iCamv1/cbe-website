@@ -198,6 +198,7 @@
 <!-- HERO -->
 <section class="hero-v2" aria-label="Hero">
   <div class="hero-bg-img"></div>
+  <div class="hero-reels" aria-hidden="true"></div>
   <div class="hero-gradient"></div>
   <div class="hero-grid-overlay"></div>
   <div class="container">
@@ -631,6 +632,39 @@
   } else {
     init();
   }
+})();
+</script>
+<script>
+// Hero reels: CBE's own Facebook reels crossfade behind the hero. They load only after the page
+// has loaded and gone idle, so the finder is usable exactly as fast as before; the photo stays as
+// the poster. Skipped for reduced motion and data saver; paused when the hero is off screen.
+(function(){
+  var box=document.querySelector('.hero-reels');
+  if(!box||matchMedia('(prefers-reduced-motion: reduce)').matches||(navigator.connection&&navigator.connection.saveData))return;
+  var reels=[
+    ['images/reels/mack-av1.mp4','video/mp4; codecs="av01.0.05M.08"','images/reels/mack.mp4'],
+    ['images/reels/western-star.mp4','video/mp4'],
+    ['images/reels/kenworth.mp4','video/mp4']
+  ];
+  function start(){
+    var probe=document.createElement('video');
+    var vids=reels.map(function(r){
+      var v=document.createElement('video');
+      v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('muted','');v.setAttribute('playsinline','');
+      v.src=(r[2]&&!probe.canPlayType(r[1]))?r[2]:r[0];
+      box.appendChild(v);return v;
+    });
+    var i=0,visible=true;
+    function show(n){
+      vids.forEach(function(v,k){v.classList.toggle('is-on',k===n);});
+      var v=vids[n];v.currentTime=0;var p=v.play();if(p&&p.catch)p.catch(function(){});
+    }
+    vids.forEach(function(v,k){v.addEventListener('ended',function(){if(k!==i)return;i=(i+1)%vids.length;show(i);});});
+    vids[0].addEventListener('canplay',function once(){vids[0].removeEventListener('canplay',once);if(visible)show(0);});
+    new IntersectionObserver(function(e){visible=e[0].isIntersecting;var v=vids[i];if(visible){if(v.classList.contains('is-on'))v.play().catch(function(){});}else v.pause();}).observe(box);
+  }
+  function idle(){('requestIdleCallback' in window)?requestIdleCallback(start,{timeout:2500}):setTimeout(start,800);}
+  document.readyState==='complete'?idle():addEventListener('load',idle);
 })();
 </script>
 <script src="fx.js" defer></script>
